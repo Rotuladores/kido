@@ -1,15 +1,5 @@
 import pickle
-class Dictionary():
-	dic = {}
-	WORD_NET3 = 'dictionary/wordnet3.pkl'
-
-	NOUN = 'noun'
-	ADVERB = 'adv'
-	ADJECTIVE = 'adj'
-	VERB = 'verb'
-
-	
-
+class smartdictionary():
 	def __init__(self, file):
 		with open(file, 'rb') as f:
 			self.dic = pickle.load(f)

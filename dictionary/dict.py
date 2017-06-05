@@ -1,27 +1,49 @@
 #!/usr/bin/env python3
 import pickle
+
 dictionary = {}
 
-f = open('adj', 'r')
-for l in f:
-	dictionary[str(l[:-1])] = 'adj'
-f.close()
+smart_dict = []
 
-f = open('adv', 'r')
-for l in f:
-	dictionary[str(l[:-1])] = 'adv'
-f.close()
+word_len = {}
 
-f = open('noun', 'r')
-for l in f:
-	dictionary[str(l[:-1])] = 'noun'
-f.close()
+for i in range(32):
+	word_len[i] = 0
+index = 0
+for path in ['adj', 'adv', 'noun', 'verb']:
+	f = open(path, 'r')
+	for l in f:
+		word = str(l[:-1]).lower()
+		if not '_' in word and not word in smart_dict:
+				smart_dict.append(word)
+				dictionary[word] = path
+		print(index)
+		index +=1
 
-f = open('verb', 'r')
-for l in f:
-	dictionary[str(l[:-1])] = 'verb'
-f.close()
 
-with open('wordnet3.pkl', 'wb') as fo:
-	pickle.dump(dictionary, fo, pickle.HIGHEST_PROTOCOL)
-# dictionary
+	f.close()
+
+# with open('wordnet3.pkl', 'wb') as fo:
+# 	pickle.dump(dictionary, fo, pickle.HIGHEST_PROTOCOL)
+
+alpha = sorted(smart_dict)
+
+supersmart = sorted(alpha, key=len)
+
+actual_len = 1
+i = 0
+for w in supersmart:
+	if len(w) != actual_len:
+		word_len[len(w)] = i
+		actual_len = len(w)
+	i+=1
+
+with open('smart_wordnet3.dat', 'w+') as fo:
+	fo.write('#32\n')
+	len_line = '#'
+	for k in range(32):
+		len_line += str(word_len[k]) + ' '
+	fo.write(len_line + '\n')
+	for w in supersmart:
+		fo.write(w + '\n')
+
