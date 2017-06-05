@@ -40,7 +40,7 @@ def edit_search(smart_dictionary, word_len, word, threshold):
     if k_max > len(word_len):
         k_max = len(word_len)
 
-    search = smart_dictionary[word_len[k_min] : word_len[k_max]]
+    search = smart_dictionary[word_len[k_min] : word_len[k_max] -1]
 
     for s in search:
         lev = levenshtein(word, s)
@@ -55,7 +55,7 @@ def edit_search(smart_dictionary, word_len, word, threshold):
 
 smart_dictionary, word_len = import_smart_dictionary('dictionary/smart_wordnet3.dat')
 
-# voglio tutte le parole con distanza massimo 4 da TEST
+# voglio tutte le parole con distanza massimo k da TEST
 test = 'garbagd'
 
 edit_search(smart_dictionary, word_len, test, 2)
