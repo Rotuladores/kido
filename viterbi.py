@@ -1,0 +1,2 @@
+def vitello():
+    return 'muuu'
