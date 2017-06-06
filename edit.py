@@ -32,5 +32,6 @@ def test():
     edit = edit_search(sd.smart_dictionary, sd.word_len, test, 3)
     print(edit)
 
+
 if __name__ == '__main__':
     test()
