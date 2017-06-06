@@ -1,21 +1,4 @@
-def levenshtein(s1, s2):
-    if len(s1) < len(s2):
-        return levenshtein(s2, s1)
-
-    if len(s2) == 0:
-        return len(s1)
-
-    previous_row = range(len(s2) + 1)
-    for i, c1 in enumerate(s1):
-        current_row = [i + 1]
-        for j, c2 in enumerate(s2):
-            insertions = previous_row[j + 1] + 1
-            deletions = current_row[j] + 1
-            substitutions = previous_row[j] + (c1 != c2)
-            current_row.append(min(insertions, deletions, substitutions))
-        previous_row = current_row
-    return previous_row[-1]
-
+import edlib
 
 def import_smart_dictionary(path):
     word_len = []
@@ -43,12 +26,12 @@ def edit_search(smart_dictionary, word_len, word, threshold):
     search = smart_dictionary[word_len[k_min] : word_len[k_max] -1]
 
     for s in search:
-        lev = levenshtein(word, s)
+        lev = edlib.align(word, s)["editDistance"]
         if lev <= threshold:
             ret.append((lev, s))
     ret = sorted(ret, key=lambda x: x[0])
 
-    print([x[1] for x in ret])
+    return [x[1] for x in ret]
 
 
 
@@ -56,6 +39,8 @@ def edit_search(smart_dictionary, word_len, word, threshold):
 smart_dictionary, word_len = import_smart_dictionary('dictionary/smart_wordnet3.dat')
 
 # voglio tutte le parole con distanza massimo k da TEST
-test = 'garbagd'
+test = 'garbaged'
 
-edit_search(smart_dictionary, word_len, test, 2)
+edit = edit_search(smart_dictionary, word_len, test, 3)
+
+print(edit)
