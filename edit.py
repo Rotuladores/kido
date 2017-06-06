@@ -1,15 +1,5 @@
 import edlib
-
-def import_smart_dictionary(path):
-    word_len = []
-    smart_dictionary = []
-    with open(path, 'r') as f:
-        skip = f.readline()
-        h = f.readline().strip()[1:].split(' ')
-        word_len = list(map(lambda x: int(x), h))
-        for l in f:
-            smart_dictionary.append(l.strip())
-    return smart_dictionary, word_len
+from smartdictionary import SmartDictionary
 
 def edit_search(smart_dictionary, word_len, word, threshold):
     k = len(word)
@@ -29,18 +19,18 @@ def edit_search(smart_dictionary, word_len, word, threshold):
         lev = edlib.align(word, s)["editDistance"]
         if lev <= threshold:
             ret.append((lev, s))
-    ret = sorted(ret, key=lambda x: x[0])
 
+    ret = sorted(ret, key=lambda x: x[0])
     return [x[1] for x in ret]
 
 
+def test():
+    sd = SmartDictionary(SmartDictionary.SMART_WORDNET3)
 
+    # voglio tutte le parole con distanza massimo k da TEST
+    test = 'garbaged'
+    edit = edit_search(sd.smart_dictionary, sd.word_len, test, 3)
+    print(edit)
 
-smart_dictionary, word_len = import_smart_dictionary('dictionary/smart_wordnet3.dat')
-
-# voglio tutte le parole con distanza massimo k da TEST
-test = 'garbaged'
-
-edit = edit_search(smart_dictionary, word_len, test, 3)
-
-print(edit)
+if __name__ == '__main__':
+    test()
