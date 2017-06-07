@@ -27,7 +27,9 @@ for f in data_trans:
         if not sd.check_existance(w):
             manca.append(w)
 print(len(list(set(manca))))
+print(len(manca))
 
 data=data.replace('.',' ')
 data=data.split(' ')
 print(len(list(set(data))))
+print(len(data))
