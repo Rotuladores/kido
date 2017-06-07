@@ -5,13 +5,10 @@ class hmm():
 		self.alpha = alpha
 		self.pi = pi
 		self.trained = False
+		self.trans_row = {}
 
-	def train(self, files, sd, verbose=True):
+	def train(self, files, sd):
 		for file in files:
-			if verbose:
-				print('Reading book: '+ str(file))
-				import datetime
-				previous = datetime.datetime.now()
 			book = self.preprocess(file)
 			phrases = book.split('.')
 
@@ -22,6 +19,7 @@ class hmm():
 						self.increment_prior(words[0])
 						for i in range(len(words) - 1):
 							self.increment_transition(words[i], words[i+1])
+							self.increment_trans_row(words[i])
 
 		self.normalize(sd.len)
 		self.trained = True
@@ -32,15 +30,23 @@ class hmm():
 		for key in self.prior.keys():
 			self.prior[key] /= tot
 		self.not_prior = self.pi / tot
+		print('prior done')
 
 		self.not_transition = {}
 		# Transition
-		for key in [x[0] for x in self.transition.keys()]:
-			tot = sum([self.transition[k] for k in self.transition.keys() if k[0] == key]) + N * self.alpha
-			for k in self.transition.keys():
-				if k[0] == key:
-					self.transition[k] /= tot
+		# for key in [x[0] for x in self.transition.keys()]:
+			# tot = sum([self.transition[k] for k in self.transition.keys() if k[0] == key]) + N * self.alpha
+			# for k in self.transition.keys():
+			# 	if k[0] == key:
+			# 		self.transition[k] /= tot
+		for key in self.trans_row.keys():
+			self.trans_row[key] += N * self.alpha
+
+		for key in self.transition.keys():
+			tot = self.trans_row[key[0]]
+			self.transition[key] /= tot
 			self.not_transition[key] = self.alpha / tot
+			
 		self.not_not_transition = 1 / N
 
 	def get_prior(self, word):
@@ -68,6 +74,12 @@ class hmm():
 			self.prior[word] += 1
 		except KeyError:
 			self.prior[word] = 1 + self.alpha
+
+	def increment_trans_row(self, word):
+		try:
+			self.trans_row[word] += 1
+		except KeyError:
+			self.trans_row[word] = 1 + self.alpha
 
 	def increment_transition(self, word1, word2):
 		try:
