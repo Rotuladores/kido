@@ -10,7 +10,7 @@ word_len = {}
 for i in range(32):
 	word_len[i] = 0
 index = 0
-for path in ['adj', 'adv', 'noun', 'verb']:
+for path in ['wordsEn.txt']:
 	f = open(path, 'r')
 	for l in f:
 		word = str(l[:-1]).lower()
@@ -38,7 +38,7 @@ for w in supersmart:
 		actual_len = len(w)
 	i+=1
 
-with open('smart_wordnet3.dat', 'w+') as fo:
+with open('smart_wordsen.dat', 'w+') as fo:
 	fo.write('#32\n')
 	len_line = '#'
 	for k in range(32):
@@ -46,4 +46,3 @@ with open('smart_wordnet3.dat', 'w+') as fo:
 	fo.write(len_line + '\n')
 	for w in supersmart:
 		fo.write(w + '\n')
-

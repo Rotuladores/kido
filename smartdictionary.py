@@ -1,6 +1,7 @@
 import edlib
 class SmartDictionary():
 	SMART_WORDNET3 = 'dictionary/smart_wordnet3.dat'
+	SMART_WORDSEN = 'dictionary/smart_wordsen.dat'
 
 	def __init__(self, path):
 		word_len = []
@@ -70,6 +71,3 @@ def test():
 
 if __name__ == '__main__':
 	test()
-
-
-
