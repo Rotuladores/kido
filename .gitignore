@@ -13,3 +13,4 @@ Thumbs.db
 .Rhistory
 __pycahce__/*
 *.pyc
+*_test.pkl

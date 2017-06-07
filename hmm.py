@@ -6,8 +6,12 @@ class hmm():
 		self.pi = pi
 		self.trained = False
 
-	def train(self, files, sd):
+	def train(self, files, sd, verbose=True):
 		for file in files:
+			if verbose:
+				print('Reading book: '+ str(file))
+				import datetime
+				previous = datetime.datetime.now()
 			book = self.preprocess(file)
 			phrases = book.split('.')
 
@@ -37,6 +41,7 @@ class hmm():
 				if k[0] == key:
 					self.transition[k] /= tot
 			self.not_transition[key] = self.alpha / tot
+		self.not_not_transition = 1 / N
 
 	def get_prior(self, word):
 		if not self.trained:
@@ -52,7 +57,10 @@ class hmm():
 		try:
 			return self.transition[word1, word2]
 		except KeyError:
-			return self.not_transition[word1]
+			try:
+				return self.not_transition[word1]
+			except KeyError:
+				return self.not_not_transition
 
 
 	def increment_prior(self, word):
@@ -116,6 +124,9 @@ def test():
 	print(net.get_transition('grabbed', 'him'))
 	# absent in transition
 	print(net.get_transition('it', 'sleep'))
+	# absent at all
+	print(net.get_transition('ittto', 'sleep'))
+
 
 
 
