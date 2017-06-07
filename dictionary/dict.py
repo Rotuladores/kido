@@ -10,11 +10,11 @@ word_len = {}
 for i in range(32):
 	word_len[i] = 0
 index = 0
-for path in ['wordsEn.txt']:
+for path in ['wordsEn.txt', 'names.txt']:
 	f = open(path, 'r')
 	for l in f:
 		word = str(l[:-1]).lower()
-		if not '_' in word and not word in smart_dict:
+		if not word in smart_dict:
 				smart_dict.append(word)
 				dictionary[word] = path
 		print(index)

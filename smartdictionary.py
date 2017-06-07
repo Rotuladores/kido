@@ -19,6 +19,7 @@ class SmartDictionary():
 		self.smart_dictionary = smart_dictionary
 		self.word_len = word_len
 		self.index_dict = index_dict
+		self.len = len(smart_dictionary)
 
 	def index(self, word):
 		try:
