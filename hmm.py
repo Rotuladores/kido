@@ -30,7 +30,6 @@ class hmm():
 		for key in self.prior.keys():
 			self.prior[key] /= tot
 		self.not_prior = self.pi / tot
-		print('prior done')
 
 		self.not_transition = {}
 		# Transition
@@ -46,7 +45,7 @@ class hmm():
 			tot = self.trans_row[key[0]]
 			self.transition[key] /= tot
 			self.not_transition[key] = self.alpha / tot
-			
+
 		self.not_not_transition = 1 / N
 
 	def get_prior(self, word):
