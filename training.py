@@ -4,7 +4,7 @@ import pickle
 
 sd = SmartDictionary(SmartDictionary.SMART_WORDSEN)
 net = hmm()
-training_set = ['training_set/it.txt']
+training_set = ['training_set/It.txt']
 net.train(training_set, sd)
 
 test_prior = ['has', 'was', 'i', 'if', 'but', 'therefore', 'although', 'cat', 'hippopotamus', 'filly', 'bill', 'bull']
@@ -17,7 +17,7 @@ test_transition = [('bill', 'has'), ('said', 'bill'), ('bill', 'said'), ('it', '
 for couple in test_transition:
 	print('({0} - {1}): {2}'.format(couple[0], couple[1], net.get_transition(couple[0],couple[1])))
 
-correct, probability = net.viterbi(3,['bill', 'said', 'ot', 'was', 'all', 'right'], sd)
+correct, probability = net.viterbi(3,['bill', 'said', 'ot', 'was', 'alt', 'ight'], sd)
 
 print(correct)
 print(probability)

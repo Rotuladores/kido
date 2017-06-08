@@ -25,7 +25,7 @@ class hmm():
 		self.trained = True
 
 	def normalize(self, N):
-		# Prior 
+		# Prior
 		tot = sum(self.prior.values()) + N * self.pi
 		for key in self.prior.keys():
 			self.prior[key] /= tot
@@ -114,26 +114,28 @@ class hmm():
 		if not self.trained:
 			raise Exception('HMM not trained')
 
+		offset = 0
 		##### Missing observations
 		import numpy as np
+		matrice = np.loadtxt('matrice.txt',delimiter=',')
 
-		prob = np.zeros((max_edit, len(sequence)))
-		path = np.zeros((max_edit, len(sequence)))
+		prob = np.zeros((max_edit+offset, len(sequence)))
+		path = np.zeros((max_edit+offset, len(sequence)))
 
 		word_edit = {}
 		for w in sequence:
-			word_edit[w] = smart_dictionary.edit_search(w, max_edit+3)[:max_edit]
+			word_edit[w] = smart_dictionary.edit_search(w, 1)[:max_edit+offset]
 
 		# Prior
-		for i in range(max_edit):
-			prob[i,0] = np.log(self.get_prior(word_edit[sequence[0]][i])) + np.log(self.calculate_observation(sequence[0] ,word_edit[sequence[0]][i]))
+		for i in range(max_edit+offset):
+			prob[i,0] = np.log(self.get_prior(word_edit[sequence[0]][i])) + np.log(self.calculate_observation(sequence[0] ,word_edit[sequence[0]][i],matrice))
 			path[i,0] = i
 
 		# Dynamic
 		for i in range(1, len(sequence)):
-			for j in range(max_edit):
-				r = [prob[k, j-1] + np.log(self.get_transition(word_edit[sequence[i-1]][k], word_edit[sequence[i]][j])) 
-					+ np.log(self.calculate_observation(sequence[i], word_edit[sequence[i]][j])) for k in range(max_edit)]
+			for j in range(max_edit+offset):
+				r = [prob[k, j-1] + np.log(self.get_transition(word_edit[sequence[i-1]][k], word_edit[sequence[i]][j]))
+					+ np.log(self.calculate_observation(sequence[i], word_edit[sequence[i]][j],matrice)) for k in range(max_edit+offset)]
 				m = max(r)
 				p = np.argmax(r)
 
@@ -159,21 +161,22 @@ class hmm():
 	# 		ret.append(col[i]*row[i])
 	# 	return ret
 
-	def calculate_observation(self, obs, real):
+	def calculate_observation(self, obs, real, perturbation):
 		from Bio import pairwise2
+
+		print(obs + ' ' + real)
 
 		align = pairwise2.align.globalxx(real, obs)[0]
 		areal = align[0]
 		aobs = align[1]
 
 		ret = 1
-		for c in len(aobs):
-			ret *= perturbation[get_index(aobs[c]), get_index(areal[c])]
-			a
+		for c in range(0,len(aobs)):
+			ret *= perturbation[self.get_index(aobs[c]), self.get_index(areal[c])]
 		return ret
 
-	@staticmethod
-	def get_index(c):
+	#@staticmethod
+	def get_index(self,c):
 		if c == '-':
 			return 26
 		else:
