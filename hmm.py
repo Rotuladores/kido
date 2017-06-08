@@ -166,10 +166,11 @@ class hmm():
 		areal = align[0]
 		aobs = align[1]
 
-		for c in aobs:
-
-
-		return 1
+		ret = 1
+		for c in len(aobs):
+			ret *= perturbation[get_index(aobs[c]), get_index(areal[c])]
+			a
+		return ret
 
 	@staticmethod
 	def get_index(c):
