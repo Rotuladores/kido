@@ -17,16 +17,21 @@ test_transition = [('bill', 'has'), ('said', 'bill'), ('bill', 'said'), ('it', '
 for couple in test_transition:
 	print('({0} - {1}): {2}'.format(couple[0], couple[1], net.get_transition(couple[0],couple[1])))
 
+correct, probability = net.viterbi(3,['bill', 'said', 'ot', 'was', 'all', 'right'], sd)
+
+print(correct)
+print(probability)
+
 # TEST SAVING
 
-with open('trainted_test.pkl', 'wb') as foutput:
-	pickle.dump(net, foutput, pickle.HIGHEST_PROTOCOL)
+# with open('trainted_test.pkl', 'wb') as foutput:
+# 	pickle.dump(net, foutput, pickle.HIGHEST_PROTOCOL)
 
-with open('trainted_test.pkl', 'rb') as finput:
-	load_net = pickle.load(finput)
+# with open('trainted_test.pkl', 'rb') as finput:
+# 	load_net = pickle.load(finput)
 
-print('-'*30)
-for word in test_prior:
-	print('{0}: {1}'.format(word, load_net.get_prior(word)))
-for couple in test_transition:
-	print('({0} - {1}): {2}'.format(couple[0], couple[1], load_net.get_transition(couple[0],couple[1])))
+# print('-'*30)
+# for word in test_prior:
+# 	print('{0}: {1}'.format(word, load_net.get_prior(word)))
+# for couple in test_transition:
+# 	print('({0} - {1}): {2}'.format(couple[0], couple[1], load_net.get_transition(couple[0],couple[1])))
