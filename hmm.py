@@ -153,14 +153,30 @@ class hmm():
 
 		return (final, np.exp(m))
 
-	def punct(self, col, row):
-		ret = []
-		for i in len(col):
-			ret.append(col[i]*row[i])
-		return ret
+	# def punct(self, col, row):
+	# 	ret = []
+	# 	for i in len(col):
+	# 		ret.append(col[i]*row[i])
+	# 	return ret
 
-	def calculate_observation(self, w1, w2):
+	def calculate_observation(self, obs, real):
+		from Bio import pairwise2
+
+		align = pairwise2.align.globalxx(real, obs)[0]
+		areal = align[0]
+		aobs = align[1]
+
+		for c in aobs:
+
+
 		return 1
+
+	@staticmethod
+	def get_index(c):
+		if c == '-':
+			return 26
+		else:
+			return ord(c) - 97
 
 
 def test():
