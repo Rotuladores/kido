@@ -7,20 +7,24 @@ net = hmm()
 training_set = ['training_set/It.txt']
 net.train(training_set, sd)
 
-test_prior = ['has', 'was', 'i', 'if', 'but', 'therefore', 'although', 'cat', 'hippopotamus', 'filly', 'bill', 'bull']
-for word in test_prior:
-	print('{0}: {1}'.format(word, net.get_prior(word)))
+# test_prior = ['has', 'was', 'i', 'if', 'but', 'therefore', 'although', 'cat', 'hippopotamus', 'filly', 'bill', 'bull']
+# for word in test_prior:
+# 	print('{0}: {1}'.format(word, net.get_prior(word)))
 
-test_transition = [('bill', 'has'), ('said', 'bill'), ('bill', 'said'), ('it', '_s'),
-					('it', 'is'), ('i', '_will'), ('you', '_are'), ('you', 'are'),
-					('lobster', 'man'), ('bat', 'man'), ('rain', 'bull')]
-for couple in test_transition:
-	print('({0} - {1}): {2}'.format(couple[0], couple[1], net.get_transition(couple[0],couple[1])))
+# test_transition = [('bill', 'has'), ('said', 'bill'), ('bill', 'said'), ('it', '_s'),
+# 					('it', 'is'), ('i', '_will'), ('you', '_are'), ('you', 'are'),
+# 					('lobster', 'man'), ('bat', 'man'), ('rain', 'bull')]
+# for couple in test_transition:
+# 	print('({0} - {1}): {2}'.format(couple[0], couple[1], net.get_transition(couple[0],couple[1])))
 
-correct, probability = net.viterbi(3,['bill', 'said', 'ot', 'was', 'alt', 'ight'], sd)
+phrase_test = ['bill', 'said', 'ot', 'was', 'alt', 'ight']
 
-print(correct)
-print(probability)
+correct, probability = net.viterbi(1,10,phrase_test, sd, draw=True)
+
+print('Input: \'' + ' '.join(phrase_test) + '\'')
+
+print('Correction: \''+' '.join(correct) + '\'')
+print('Probability: ' + str(probability))
 
 # TEST SAVING
 

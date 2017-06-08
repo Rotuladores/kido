@@ -110,37 +110,54 @@ class hmm():
 
 		return data
 
-	def viterbi(self, max_edit, sequence, smart_dictionary):
+	def viterbi(self, max_edit, search_edit, sequence, smart_dictionary, draw=False):
 		if not self.trained:
 			raise Exception('HMM not trained')
 
-		offset = 0
+		# offset = 0
 		##### Missing observations
 		import numpy as np
-		matrice = np.loadtxt('matrice.txt',delimiter=',')
+		self.perturbation = np.loadtxt('matrice.txt',delimiter=',')
 
-		prob = np.zeros((max_edit+offset, len(sequence)))
-		path = np.zeros((max_edit+offset, len(sequence)))
+		prob = np.zeros((search_edit, len(sequence)))
+		path = np.zeros((search_edit, len(sequence)))
 
 		word_edit = {}
 		for w in sequence:
-			word_edit[w] = smart_dictionary.edit_search(w, 1)[:max_edit+offset]
+			word_edit[w] = smart_dictionary.edit_search(w, max_edit)[:search_edit]
+		word_edit = self.check_word_edit(word_edit, search_edit)
 
 		# Prior
-		for i in range(max_edit+offset):
-			prob[i,0] = np.log(self.get_prior(word_edit[sequence[0]][i])) + np.log(self.calculate_observation(sequence[0] ,word_edit[sequence[0]][i],matrice))
+		for i in range(search_edit):
+			prob[i,0] = np.log(self.get_prior(word_edit[sequence[0]][i])) + np.log(self.calculate_observation(sequence[0], word_edit[sequence[0]][i]))
 			path[i,0] = i
-
 		# Dynamic
-		for i in range(1, len(sequence)):
-			for j in range(max_edit+offset):
-				r = [prob[k, j-1] + np.log(self.get_transition(word_edit[sequence[i-1]][k], word_edit[sequence[i]][j]))
-					+ np.log(self.calculate_observation(sequence[i], word_edit[sequence[i]][j],matrice)) for k in range(max_edit+offset)]
+		for j in range(1, len(sequence)):
+			for i in range(search_edit):
+				r = [prob[k, j-1] + np.log(self.get_transition(word_edit[sequence[j-1]][k], word_edit[sequence[j]][i]))
+					+ np.log(self.calculate_observation(sequence[j], word_edit[sequence[j]][i])) for k in range(search_edit)]
+
 				m = max(r)
 				p = np.argmax(r)
+				prob[i, j] = m
+				path[i, j] = p
 
-				prob[j, i] = m
-				path[j, i] = p
+		# Draw net
+		if draw:
+			import pydot
+			from PIL import Image
+
+			draw = pydot.Dot(graph_type='digraph', rankdir="LR")
+
+			for i in range(1, len(sequence)):
+				for current in word_edit[sequence[i]]:
+					for parent in word_edit[sequence[i-1]]:
+						edge = pydot.Edge(parent, current)
+						draw.add_edge(edge)
+
+			draw.write_png('draw.png')
+			image = Image.open('draw.png')
+			image.show()
 
 		fpath = [0] * len(sequence)
 		m = max(prob[:,len(sequence)-1])
@@ -155,16 +172,20 @@ class hmm():
 
 		return (final, np.exp(m))
 
-	# def punct(self, col, row):
-	# 	ret = []
-	# 	for i in len(col):
-	# 		ret.append(col[i]*row[i])
-	# 	return ret
+	@staticmethod
+	def check_word_edit(word_edit, N):
+		for key in word_edit.keys():
+			k = len(word_edit[key])
+			if k < N:
+				for i in range(N-k):
+					word_edit[key].append(word_edit[key][k-1])
+		return word_edit
 
-	def calculate_observation(self, obs, real, perturbation):
+
+	def calculate_observation(self, obs, real):
 		from Bio import pairwise2
 
-		print(obs + ' ' + real)
+		# print(obs + ' ' + real)
 
 		align = pairwise2.align.globalxx(real, obs)[0]
 		areal = align[0]
@@ -172,11 +193,11 @@ class hmm():
 
 		ret = 1
 		for c in range(0,len(aobs)):
-			ret *= perturbation[self.get_index(aobs[c]), self.get_index(areal[c])]
+			ret *= self.perturbation[self.get_index(aobs[c]), self.get_index(areal[c])]
 		return ret
 
-	#@staticmethod
-	def get_index(self,c):
+	@staticmethod
+	def get_index(c):
 		if c == '-':
 			return 26
 		else:
