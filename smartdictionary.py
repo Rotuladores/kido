@@ -49,7 +49,7 @@ class SmartDictionary():
 
 		for s in search:
 			lev = edlib.align(word, s)["editDistance"]
-			if lev <= threshold:
+			if s != '' and lev <= threshold:
 				ret.append((lev, s))
 
 		ret = sorted(ret, key=lambda x: x[0])

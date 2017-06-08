@@ -17,9 +17,10 @@ net.train(training_set, sd)
 # for couple in test_transition:
 # 	print('({0} - {1}): {2}'.format(couple[0], couple[1], net.get_transition(couple[0],couple[1])))
 
-phrase_test = ['bill', 'said', 'ot', 'was', 'alt', 'ight']
+#phrase_test = ['bill', 'said', 'ot', 'was', 'alt', 'ight']
+phrase_test = ['fpllow','me','if','you','wsnt','to','live']
 
-correct, probability = net.viterbi(1,10,phrase_test, sd, draw=True)
+correct, probability = net.viterbi(1,3,phrase_test, sd, draw=True)
 
 print('Input: \'' + ' '.join(phrase_test) + '\'')
 

@@ -185,7 +185,7 @@ class hmm():
 	def calculate_observation(self, obs, real):
 		from Bio import pairwise2
 
-		# print(obs + ' ' + real)
+		#print(obs + ' ' + real)
 
 		align = pairwise2.align.globalxx(real, obs)[0]
 		areal = align[0]
