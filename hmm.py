@@ -8,8 +8,8 @@ class hmm():
 		self.trans_row = {}
 
 	def train(self, files, sd):
-		for file in files:
-			book = self.preprocess(file)
+		for fil in files:
+			book = self.preprocess(fil)
 			phrases = book.split('.')
 
 			for p in phrases:
@@ -92,6 +92,7 @@ class hmm():
 			data = data.replace(c, '\'')
 
 		data = data.replace('\'ll',' _will')
+		data = data.replace('\'m',' _am')
 		data = data.replace('\'re',' _are')
 		data = data.replace('n\'t',' _not')
 		data = data.replace('\'s',' _s')
@@ -114,6 +115,17 @@ class hmm():
 		if not self.trained:
 			raise Exception('HMM not trained')
 
+		for i in range(len(sequence)):
+			sequence[i] = sequence[i].replace('\'ll',' _will')
+			sequence[i] = sequence[i].replace('\'m',' _am')
+			sequence[i] = sequence[i].replace('\'re',' _are')
+			sequence[i] = sequence[i].replace('n\'t',' _not')
+			sequence[i] = sequence[i].replace('\'s',' _s')
+			sequence[i] = sequence[i].replace('\'d',' _d')
+			w = sequence[i].split()
+			sequence.pop(i)
+			sequence[i:i] = w
+
 		# offset = 0
 		##### Missing observations
 		import numpy as np
@@ -125,7 +137,8 @@ class hmm():
 		word_edit = {}
 		for w in sequence:
 			word_edit[w] = smart_dictionary.edit_search(w, max_edit)[:search_edit]
-		word_edit = self.check_word_edit(word_edit, search_edit)
+		word_edit = self.check_word_edit(word_edit, search_edit, smart_dictionary)
+		print(word_edit)
 
 		# Prior
 		for i in range(search_edit):
@@ -170,12 +183,25 @@ class hmm():
 			final.insert(0, word_edit[sequence[i]][fpath[i]])
 			m += prob[fpath[i+1], i+1]
 
+		data = ' '.join(final)
+		data = data.replace(' _will', '\'ll')
+		data = data.replace(' _am', '\'m')
+		data = data.replace(' _are','\'re')
+		data = data.replace(' _not','n\'t')
+		data = data.replace(' _s','\'s')
+		data = data.replace(' _d','\'d')
+		final = data.split()
+
 		return (final, np.exp(m))
 
 	@staticmethod
-	def check_word_edit(word_edit, N):
+	def check_word_edit(word_edit, N, sd):
 		for key in word_edit.keys():
 			k = len(word_edit[key])
+			if key[0] == '_':
+				word_edit[key] = [key] * N
+			if k == 0:
+				word_edit[key] = sd.edit_search(key, 10)[:N]
 			if k < N:
 				for i in range(N-k):
 					word_edit[key].append(word_edit[key][k-1])
@@ -185,6 +211,8 @@ class hmm():
 	def calculate_observation(self, obs, real):
 		from Bio import pairwise2
 
+		if obs[0] == '_':
+			return 1
 		#print(obs + ' ' + real)
 
 		align = pairwise2.align.globalxx(real, obs)[0]

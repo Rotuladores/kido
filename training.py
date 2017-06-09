@@ -4,7 +4,22 @@ import pickle
 
 sd = SmartDictionary(SmartDictionary.SMART_WORDSEN)
 net = hmm()
-training_set = ['training_set/It.txt']
+training_set = ['training_set/It.txt',
+				'training_set/hp1.txt',
+				'training_set/hp2.txt',
+				'training_set/hp3.txt',
+				'training_set/hp4.txt',
+				'training_set/hp5.txt',
+				'training_set/hp6.txt',
+				'training_set/hp7.txt',
+				'training_set/dune1.txt',
+				'training_set/dune2.txt',
+				'training_set/dune3.txt',
+				'training_set/dune4.txt',
+				'training_set/dune5.txt',
+				'training_set/dune6.txt',
+				'training_set/dune7.txt',
+				'training_set/dune8.txt']
 net.train(training_set, sd)
 
 # test_prior = ['has', 'was', 'i', 'if', 'but', 'therefore', 'although', 'cat', 'hippopotamus', 'filly', 'bill', 'bull']
@@ -16,20 +31,25 @@ net.train(training_set, sd)
 # 					('lobster', 'man'), ('bat', 'man'), ('rain', 'bull')]
 # for couple in test_transition:
 # 	print('({0} - {1}): {2}'.format(couple[0], couple[1], net.get_transition(couple[0],couple[1])))
+while True:
+	inp = input('Dimmi qualcosa... ')
+	phrase_test = inp.split()
 
-#phrase_test = ['bill', 'said', 'ot', 'was', 'alt', 'ight']
-phrase_test = ['fpllow','me','if','you','wsnt','to','live']
+	#phrase_test = ['bill', 'said', 'zt', 'was', 'alt', 'ight']
+	#phrase_test = ['fpllow','me','if','yu','dlpn\'t','wsnt','to','live']
+	#phrase_test = ['the','bsall','is','on','the','table']
 
-correct, probability = net.viterbi(1,3,phrase_test, sd, draw=True)
+	print('Input: \'' + ' '.join(phrase_test) + '\'')
 
-print('Input: \'' + ' '.join(phrase_test) + '\'')
+	correct, probability = net.viterbi(2,20,phrase_test, sd, draw=False)
 
-print('Correction: \''+' '.join(correct) + '\'')
-print('Probability: ' + str(probability))
+	print('Correction: \''+' '.join(correct) + '\'')
+	print('Probability: ' + str(probability))
+	print('')
 
 # TEST SAVING
 
-# with open('trainted_test.pkl', 'wb') as foutput:
+# with open('trained_test.pkl', 'wb') as foutput:
 # 	pickle.dump(net, foutput, pickle.HIGHEST_PROTOCOL)
 
 # with open('trainted_test.pkl', 'rb') as finput:

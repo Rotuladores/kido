@@ -1,4 +1,5 @@
 import edlib
+import numpy as np
 class SmartDictionary():
 	SMART_WORDNET3 = 'dictionary/smart_wordnet3.dat'
 	SMART_WORDSEN = 'dictionary/smart_wordsen.dat'
@@ -54,6 +55,39 @@ class SmartDictionary():
 
 		ret = sorted(ret, key=lambda x: x[0])
 		return [x[1] for x in ret]
+
+	# 	matrice = np.loadtxt('matrice.txt',delimiter=',')
+	# 	retProb = []
+	# 	for r in ret:
+	# 	    #print(r)
+	# 	    p = self.calculate_observation(r[1],word,matrice)
+	# 	    retProb.append((p,r[0],r[1]))
+	#
+	# 	retProb = sorted(retProb, key=lambda x: x[0], reverse=True)
+	# 	#print(retProb)
+	# 	return [x[2] for x in retProb]
+	#
+	# def calculate_observation(self, obs, real, perturbation):
+	# 	from Bio import pairwise2
+	#
+	# 	#print(obs + ' ' + real)
+	#
+	# 	align = pairwise2.align.globalxx(real, obs)[0]
+	# 	areal = align[0]
+	# 	aobs = align[1]
+	# 	print(areal)
+	# 	print(aobs)
+	# 	ret = 1
+	# 	for c in range(0,len(aobs)):
+	# 		ret *= perturbation[self.get_index(aobs[c]), self.get_index(areal[c])]
+	# 	return ret
+	#
+	# #@staticmethod
+	# def get_index(self,c):
+	# 	if c == '-':
+	# 		return 26
+	# 	else:
+	# 		return ord(c) - 97
 
 def test():
 	d = SmartDictionary(SmartDictionary.SMART_WORDNET3)
