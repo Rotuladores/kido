@@ -4,6 +4,7 @@ _not
 _s
 _d
 _am
+_have
 a
 aah
 aahed

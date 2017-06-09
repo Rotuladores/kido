@@ -9,6 +9,7 @@ class hmm():
 
 	def train(self, files, sd):
 		for fil in files:
+			print(fil)
 			book = self.preprocess(fil)
 			phrases = book.split('.')
 
@@ -94,6 +95,7 @@ class hmm():
 		data = data.replace('\'ll',' _will')
 		data = data.replace('\'m',' _am')
 		data = data.replace('\'re',' _are')
+		data = data.replace('\'ve',' _have')
 		data = data.replace('n\'t',' _not')
 		data = data.replace('\'s',' _s')
 		data = data.replace('\'d',' _d')
@@ -119,6 +121,7 @@ class hmm():
 			sequence[i] = sequence[i].replace('\'ll',' _will')
 			sequence[i] = sequence[i].replace('\'m',' _am')
 			sequence[i] = sequence[i].replace('\'re',' _are')
+			sequence[i] = sequence[i].replace('\'ve',' _have')
 			sequence[i] = sequence[i].replace('n\'t',' _not')
 			sequence[i] = sequence[i].replace('\'s',' _s')
 			sequence[i] = sequence[i].replace('\'d',' _d')
@@ -187,6 +190,7 @@ class hmm():
 		data = data.replace(' _will', '\'ll')
 		data = data.replace(' _am', '\'m')
 		data = data.replace(' _are','\'re')
+		data = data.replace(' _have','\'ve')
 		data = data.replace(' _not','n\'t')
 		data = data.replace(' _s','\'s')
 		data = data.replace(' _d','\'d')
