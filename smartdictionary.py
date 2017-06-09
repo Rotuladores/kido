@@ -71,12 +71,12 @@ class SmartDictionary():
 	# 	from Bio import pairwise2
 	#
 	# 	#print(obs + ' ' + real)
-	#
-	# 	align = pairwise2.align.globalxx(real, obs)[0]
-	# 	areal = align[0]
-	# 	aobs = align[1]
-	# 	print(areal)
-	# 	print(aobs)
+	# 	areal = real
+	# 	aobs = obs
+	# 	if len(obs) != len(real):
+	# 		align = pairwise2.align.globalxx(real, obs)[0]
+	# 		areal = align[0]
+	# 		aobs = align[1]
 	# 	ret = 1
 	# 	for c in range(0,len(aobs)):
 	# 		ret *= perturbation[self.get_index(aobs[c]), self.get_index(areal[c])]

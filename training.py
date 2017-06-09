@@ -22,6 +22,8 @@ training_set = ['training_set/It.txt',
 				'training_set/dune8.txt']
 net.train(training_set, sd)
 
+#print(sd.edit_search('swol', 1))
+
 # test_prior = ['has', 'was', 'i', 'if', 'but', 'therefore', 'although', 'cat', 'hippopotamus', 'filly', 'bill', 'bull']
 # for word in test_prior:
 # 	print('{0}: {1}'.format(word, net.get_prior(word)))
@@ -41,7 +43,7 @@ while True:
 
 	print('Input: \'' + ' '.join(phrase_test) + '\'')
 
-	correct, probability = net.viterbi(2,20,phrase_test, sd, draw=False)
+	correct, probability = net.viterbi(2,50,phrase_test, sd, draw=False)
 
 	print('Correction: \''+' '.join(correct) + '\'')
 	print('Probability: ' + str(probability))

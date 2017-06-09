@@ -215,13 +215,22 @@ class hmm():
 			return 1
 		#print(obs + ' ' + real)
 
+		ret = 1
+
 		align = pairwise2.align.globalxx(real, obs)[0]
 		areal = align[0]
 		aobs = align[1]
-
-		ret = 1
-		for c in range(0,len(aobs)):
-			ret *= self.perturbation[self.get_index(aobs[c]), self.get_index(areal[c])]
+		if len(obs) != len(real):
+			for c in range(0,len(aobs)):
+				ret *= self.perturbation[self.get_index(aobs[c]), self.get_index(areal[c])]
+		else:
+			ret1 = 1
+			for c in range(0,len(aobs)):
+				ret1 *= self.perturbation[self.get_index(aobs[c]), self.get_index(areal[c])]
+			ret2 = 1
+			for c in range(0,len(obs)):
+				ret2 *= self.perturbation[self.get_index(obs[c]), self.get_index(real[c])]
+			ret = max([ret1,ret2])
 		return ret
 
 	@staticmethod
