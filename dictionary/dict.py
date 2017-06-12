@@ -10,7 +10,7 @@ word_len = {}
 for i in range(32):
 	word_len[i] = 0
 index = 0
-for path in ['wordsEn.txt', 'names.txt']:
+for path in ['wordsEn.txt', 'names.txt', 'bigrams.txt']:
 	f = open(path, 'r')
 	for l in f:
 		word = str(l[:-1]).lower()
@@ -38,7 +38,7 @@ for w in supersmart:
 		actual_len = len(w)
 	i+=1
 
-with open('smart_wordsen.dat', 'w+') as fo:
+with open('smart_wordsen_bigram.dat', 'w+') as fo:
 	fo.write('#32\n')
 	len_line = '#'
 	for k in range(32):

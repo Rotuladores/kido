@@ -3,7 +3,7 @@ import numpy as np
 class SmartDictionary():
 	SMART_WORDNET3 = 'dictionary/smart_wordnet3.dat'
 	SMART_WORDSEN = 'dictionary/smart_wordsen.dat'
-
+	SMART_WORDSEN_BIGRAM = 'dictionary/smart_wordsen_bigram.dat'
 	def __init__(self, path):
 		word_len = []
 		smart_dictionary = []
