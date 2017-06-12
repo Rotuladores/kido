@@ -3,15 +3,6 @@ from smartdictionary import SmartDictionary
 import pickle
 import os
 
-def visit_dir(path):
-    l = []
-    gen = next(os.walk(path))
-    l = l + gen[2]
-    l = list(map(lambda x: gen[0][len(os.getcwd())+1:]+x,l))
-    for s in gen[1]:
-        l = l+visit_dir(path+s+'/')
-    return l
-
 path = 'training_set/'
 
 sd = SmartDictionary(SmartDictionary.SMART_WORDSEN)
