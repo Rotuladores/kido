@@ -32,13 +32,24 @@ class Interface(Frame):
 
 		self.net = load_net
 		self.sd = SmartDictionary(SmartDictionary.SMART_WORDSEN)
-		self.vitello = []
+		self.previous_len = 0
+		# self.vitello = []
 
 	def correct(self, event):
 		# print(self.vitello)
 		inserted = self.edit_input.get().split()
-		# if len(self.vitello) < 4:
-		correct, probability = self.net.viterbi(2,50,inserted, self.sd, draw=False)
+		print(len(inserted))
+		print(inserted)
+		print(self.previous_len)
+		if len(inserted) == 1:
+			correct, probability = self.net.build_viterbi(2,50,inserted[0], self.sd)
+			self.previous_len = 1
+		elif len(inserted) == self.previous_len + 1:
+			correct, probability = self.net.add_viterbi_layer(2,50,inserted[-1])
+			self.previous_len += 1
+		else:
+			return
+
 		self.label_correct['text'] = ' '.join(correct)
 		# self.vitello.append(previous)
 		# else:

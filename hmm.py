@@ -1,3 +1,4 @@
+import numpy as np
 class hmm():
 	def __init__(self, alpha=0.00001, pi=0.0002):
 		self.prior = {}
@@ -113,6 +114,107 @@ class hmm():
 
 		return data
 
+	def build_viterbi(self, max_edit, search_edit, prior, smart_dictionary):
+		if not self.trained:
+			raise Exception('HMM not trained')
+
+		prior = prior.replace('\'ll',' _will')
+		prior = prior.replace('\'m',' _am')
+		prior = prior.replace('\'re',' _are')
+		prior = prior.replace('\'ve',' _have')
+		prior = prior.replace('n\'t',' _not')
+		prior = prior.replace('\'s',' _s')
+		prior = prior.replace('\'d',' _d')
+
+		sequence = prior.split()
+
+		self.perturbation = np.loadtxt('matrice.txt', delimiter=',')
+		self.prob = np.zeros((search_edit, 1))
+		self.path = np.zeros((search_edit, 1))
+		self.sd = smart_dictionary
+		self.word_edit = {}
+		self.sequence = []
+
+		self.word_edit = {}
+		
+		self.word_edit[sequence[0]] = self.sd.edit_search(sequence[0], max_edit)[:search_edit]
+		self.word_edit = self.check_word_edit(self.word_edit, search_edit, self.sd)
+
+		# Prior
+		for i in range(search_edit):
+			self.prob[i,0] = np.log(self.get_prior(self.word_edit[sequence[0]][i])) + np.log(self.calculate_observation(sequence[0], self.word_edit[sequence[0]][i]))
+			self.path[i,0] = i
+
+		self.sequence.append(sequence[0])
+
+		if len(sequence) > 1:
+			return(self.add_viterbi_layer(max_edit, search_edit, sequence[1]))
+		return(self.reconstruct_viterbi())
+
+
+	def add_viterbi_layer(self, max_edit, search_edit, new_word):
+		new_prob = np.zeros((search_edit, 1))
+		new_path = np.zeros((search_edit, 1))
+
+		new_word = new_word.replace('\'ll',' _will')
+		new_word = new_word.replace('\'m',' _am')
+		new_word = new_word.replace('\'re',' _are')
+		new_word = new_word.replace('\'ve',' _have')
+		new_word = new_word.replace('n\'t',' _not')
+		new_word = new_word.replace('\'s',' _s')
+		new_word = new_word.replace('\'d',' _d')
+
+		sequence = new_word.split()
+
+		self.sequence.append(sequence[0])
+
+		self.word_edit[sequence[0]] = self.sd.edit_search(sequence[0], max_edit)[:search_edit]
+		self.word_edit = self.check_word_edit(self.word_edit, search_edit, self.sd)
+
+		self.prob = np.append(self.prob, new_prob, axis=1)
+		self.path = np.append(self.path, new_path, axis=1)
+
+		j = self.prob.shape[1] - 1
+
+		for i in range(search_edit):
+				r = [self.prob[k, j-1] + np.log(self.get_transition(self.word_edit[self.sequence[j-1]][k], self.word_edit[self.sequence[j]][i]))
+					+ np.log(self.calculate_observation(self.sequence[j], self.word_edit[self.sequence[j]][i])) for k in range(search_edit)]
+
+				m = max(r)
+				p = np.argmax(r)
+				self.prob[i, j] = m
+				self.path[i, j] = p
+
+		if len(sequence) > 1:
+			return(self.add_viterbi_layer(max_edit, search_edit, sequence[1]))
+
+		return(self.reconstruct_viterbi())
+
+
+	def reconstruct_viterbi(self):
+		fpath = [0] * len(self.sequence)
+		m = max(self.prob[:,len(self.sequence)-1])
+		p = np.argmax(self.prob[:,len(self.sequence)-1])
+		fpath[len(self.sequence)-1] = p
+		final = [self.word_edit[self.sequence[len(self.sequence)-1]][p]]
+
+		for i in range(len(self.sequence)-2, -1, -1):
+			fpath[i] = int(self.path[fpath[i+1], i+1])
+			final.insert(0, self.word_edit[self.sequence[i]][fpath[i]])
+			m += self.prob[fpath[i+1], i+1]
+
+		data = ' '.join(final)
+		data = data.replace(' _will', '\'ll')
+		data = data.replace(' _am', '\'m')
+		data = data.replace(' _are','\'re')
+		data = data.replace(' _have','\'ve')
+		data = data.replace(' _not','n\'t')
+		data = data.replace(' _s','\'s')
+		data = data.replace(' _d','\'d')
+		final = data.split()
+
+		return (final, np.exp(m))
+
 	def viterbi(self, max_edit, search_edit, sequence, smart_dictionary, draw=False):
 		if not self.trained:
 			raise Exception('HMM not trained')
@@ -129,7 +231,6 @@ class hmm():
 			sequence.pop(i)
 			sequence[i:i] = w
 
-		##### Missing observations
 		import numpy as np
 		self.perturbation = np.loadtxt('matrice.txt',delimiter=',')
 
