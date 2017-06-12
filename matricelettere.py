@@ -1,4 +1,5 @@
 import numpy
+#sistemiamo
 
 #prob lettere non vicine
 v2 = float(1)/20
