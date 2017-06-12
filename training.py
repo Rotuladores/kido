@@ -12,11 +12,15 @@ def visit_dir(path):
         l = l+visit_dir(path+s+'/')
     return l
 
-path = '/home/ld/daniele/UniMiB/Magistrale/Metodi probabilistici/misspelling/training_set/'
+path = 'training_set/'
 
 sd = SmartDictionary(SmartDictionary.SMART_WORDSEN)
 net = hmm()
-training_set = visit_dir(path)
+training_set = []
+for root, dirs, files in os.walk(path):
+    for file in files:
+        if file.endswith(".txt"):
+             training_set.append(os.path.join(root, file))
 # training_set = ['training_set/It.txt',
 # 				'training_set/hp1.txt',
 # 				'training_set/hp2.txt',

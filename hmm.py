@@ -129,7 +129,6 @@ class hmm():
 			sequence.pop(i)
 			sequence[i:i] = w
 
-		# offset = 0
 		##### Missing observations
 		import numpy as np
 		self.perturbation = np.loadtxt('matrice.txt',delimiter=',')
@@ -141,7 +140,7 @@ class hmm():
 		for w in sequence:
 			word_edit[w] = smart_dictionary.edit_search(w, max_edit)[:search_edit]
 		word_edit = self.check_word_edit(word_edit, search_edit, smart_dictionary)
-		print(word_edit)
+		# print(word_edit)
 
 		# Prior
 		for i in range(search_edit):
