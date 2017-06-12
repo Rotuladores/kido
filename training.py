@@ -50,26 +50,26 @@ net.train(training_set, sd)
 # 					('lobster', 'man'), ('bat', 'man'), ('rain', 'bull')]
 # for couple in test_transition:
 # 	print('({0} - {1}): {2}'.format(couple[0], couple[1], net.get_transition(couple[0],couple[1])))
-while True:
-	inp = input('Dimmi qualcosa... ')
-	phrase_test = inp.split()
+# while True:
+# 	inp = input('Dimmi qualcosa... ')
+# 	phrase_test = inp.split()
 
-	#phrase_test = ['bill', 'said', 'zt', 'was', 'alt', 'ight']
-	#phrase_test = ['fpllow','me','if','yu','dlpn\'t','wsnt','to','live']
-	#phrase_test = ['the','bsall','is','on','the','table']
+# 	#phrase_test = ['bill', 'said', 'zt', 'was', 'alt', 'ight']
+# 	#phrase_test = ['fpllow','me','if','yu','dlpn\'t','wsnt','to','live']
+# 	#phrase_test = ['the','bsall','is','on','the','table']
 
-	print('Input: \'' + ' '.join(phrase_test) + '\'')
+# 	print('Input: \'' + ' '.join(phrase_test) + '\'')
 
-	correct, probability = net.viterbi(2,25,phrase_test, sd, draw=False)
+# 	correct, probability = net.viterbi(2,25,phrase_test, sd, draw=False)
 
-	print('Correction: \''+' '.join(correct) + '\'')
-	print('Probability: ' + str(probability))
-	print('')
+# 	print('Correction: \''+' '.join(correct) + '\'')
+# 	print('Probability: ' + str(probability))
+# 	print('')
 
 # TEST SAVING
 
-# with open('trained_test.pkl', 'wb') as foutput:
-# 	pickle.dump(net, foutput, pickle.HIGHEST_PROTOCOL)
+with open('trained_test.pkl', 'wb') as foutput:
+	pickle.dump(net, foutput, pickle.HIGHEST_PROTOCOL)
 
 # with open('trainted_test.pkl', 'rb') as finput:
 # 	load_net = pickle.load(finput)
