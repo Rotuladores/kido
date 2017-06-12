@@ -27,7 +27,7 @@ class Interface(Frame):
 
 
 		# Load net
-		with open('trainted_test.pkl', 'rb') as finput:
+		with open('trained_test.pkl', 'rb') as finput:
 			load_net = pickle.load(finput)
 
 		self.net = load_net
