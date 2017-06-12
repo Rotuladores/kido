@@ -31,7 +31,7 @@ class Interface(Frame):
 			load_net = pickle.load(finput)
 
 		self.net = load_net
-		self.sd = SmartDictionary(SmartDictionary.SMART_WORDSEN_BIGRAM)
+		self.sd = SmartDictionary(SmartDictionary.SMART_WORDSEN)
 		self.previous_len = 0
 		# self.vitello = []
 
