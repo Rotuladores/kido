@@ -326,7 +326,10 @@ class hmm():
 		aobs = align[1]
 		if len(obs) != len(real):
 			for c in range(0,len(aobs)):
-				ret *= self.perturbation[self.get_index(aobs[c]), self.get_index(areal[c])]
+				if areal[c] == '+':
+					ret *= 0.01
+				else:
+					ret *= self.perturbation[self.get_index(aobs[c]), self.get_index(areal[c])]
 		else:
 			ret1 = 1
 			for c in range(0,len(aobs)):
