@@ -31,16 +31,16 @@ class Interface(Frame):
 			load_net = pickle.load(finput)
 
 		self.net = load_net
-		self.sd = SmartDictionary(SmartDictionary.SMART_WORDSEN)
+		self.sd = SmartDictionary(SmartDictionary.SMART_WORDSEN_BIGRAM)
 		self.previous_len = 0
 		# self.vitello = []
 
 	def correct(self, event):
 		# print(self.vitello)
 		inserted = self.edit_input.get().split()
-		print(len(inserted))
-		print(inserted)
-		print(self.previous_len)
+		#print(len(inserted))
+		#print(inserted)
+		#print(self.previous_len)
 		if len(inserted) == 1:
 			correct, probability = self.net.build_viterbi(2,50,inserted[0], self.sd)
 			self.previous_len = 1
