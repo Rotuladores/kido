@@ -31,7 +31,7 @@ class Interface(Frame):
 			load_net = pickle.load(finput)
 
 		self.net = load_net
-		self.sd = SmartDictionary(SmartDictionary.SMART_WORDSEN)
+		self.sd = SmartDictionary(SmartDictionary.SMART_WORDSEN_BIGRAM)
 		self.previous_len = 0
 		# self.vitello = []
 
@@ -42,10 +42,10 @@ class Interface(Frame):
 		#print(inserted)
 		#print(self.previous_len)
 		if len(inserted) == 1:
-			correct, probability = self.net.build_viterbi(2,50,inserted[0], self.sd)
+			correct, probability = self.net.build_viterbi(2,25,inserted[0], self.sd)
 			self.previous_len = 1
 		elif len(inserted) == self.previous_len + 1:
-			correct, probability = self.net.add_viterbi_layer(2,50,inserted[-1])
+			correct, probability = self.net.add_viterbi_layer(2,25,inserted[-1])
 			self.previous_len += 1
 		else:
 			return

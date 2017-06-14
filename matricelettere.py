@@ -26,7 +26,7 @@ s6 = 1-0.8-v6*6-k6*19
 s7 = 1-0.8-v7*7-k7*18
 
 g=0.8 #prob di digitare la lettera giusta
-u=float(1)/26
+u=float(1)/52
 
 plettere = numpy.array([[g,k5,k5,k5,k5,k5,k5,k5,k5,k5,k5,k5,k5,k5,v5,k5,v5,k5,k5,k5,k5,k5,v5,v5,k5,v5,s5],[k4,g,k4,k4,k4,k4,v4,v4,k4,k4,k4,k4,k4,v4,k4,k4,k4,k4,k4,k4,k4,v4,k4,k4,k4,k4,s4],[k4,k4,g,v4,k4,v4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,v4,k4,v4,k4,k4,s4],[k6,k6,v6,g,v6,v6,k6,k6,k6,k6,k6,k6,k6,k6,k6,k6,k6,v6,v6,k6,k6,k6,k6,v6,k6,k6,s6],[k5,k5,k5,v5,g,v5,k5,k5,k5,k5,k5,k5,k5,k5,k5,k5,k5,v5,v5,k5,k5,k5,v5,k5,k5,k5,s5],[k6,k6,v6,v6,k6,g,v6,k6,k6,k6,k6,k6,k6,k6,k6,k6,k6,v6,k6,v6,k6,v6,k6,k6,k6,k6,s6],[k6,v6,k6,k6,k6,v6,g,v6,v6,k6,k6,k6,k6,k6,k6,k6,k6,k6,k6,v6,k6,k6,k6,k6,v6,k6,s6],[k6,v6,k6,k6,k6,k6,v6,g,k6,v6,k6,k6,k6,v6,k6,k6,k6,k6,k6,k6,v6,k6,k6,k6,v6,k6,s6],[k5,k5,k5,k5,k5,k5,k5,k5,g,v5,v5,v5,k5,k5,v5,k5,k5,k5,k5,k5,v5,k5,k5,k5,k5,k5,s5],[k6,k6,k6,k6,k6,k6,k6,v6,v6,g,v6,k6,v6,v6,k6,k6,k6,k6,k6,k6,v6,k6,k6,k6,k6,k6,s6],[k5,k5,k5,k5,k5,k5,k5,k5,v5,v5,g,v5,v5,k5,v5,k5,k5,k5,k5,k5,k5,k5,k5,k5,k5,k5,s5],[k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,v3,g,k3,k3,v3,v3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,s3],[k3,k3,k3,k3,k3,k3,k3,k3,k3,v3,v3,k3,g,v3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,s3],[k4,v4,k4,k4,k4,k4,k4,v4,k4,v4,k4,k4,v4,g,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,s4],[k4,k4,k4,k4,k4,k4,k4,k4,v4,k4,v4,v4,k4,k4,g,v4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,s4],[k2,k2,k2,k2,k2,k2,k2,k2,k2,k2,k2,v2,k2,k2,v2,g,k2,k2,k2,k2,k2,k2,k2,k2,k2,k2,s2],[v3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,g,k3,v3,k3,k3,k3,v3,k3,k3,k3,s3],[k5,k5,k5,v5,v5,v5,v5,k5,k5,k5,k5,k5,k5,k5,k5,k5,k5,g,k5,v5,k5,k5,k5,k5,k5,k5,s5],[v6,k6,k6,v6,v6,k6,k6,k6,k6,k6,k6,k6,k6,k6,k6,k6,k6,k6,g,k6,k6,k6,v6,v6,k6,v6,s6],[k4,k4,k4,k4,k4,v4,v4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,v4,k4,g,k4,k4,k4,k4,v4,k4,s4],[k4,k4,k4,k4,k4,k4,k4,v4,v4,v4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,g,k4,k4,k4,v4,k4,s4],[k4,v4,v4,k4,k4,v4,v4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,g,k4,k4,k4,k4,s4],[v4,k4,k4,k4,v4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,v4,k4,v4,k4,k4,k4,g,k4,k4,k4,s4],[k4,k4,v4,v4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,k4,v4,k4,k4,k4,k4,k4,k4,g,k4,v4,s4],[k4,k4,k4,k4,k4,k4,v4,v4,k4,k4,k4,k4,k4,k4,k4,k4,k4,v4,v4,k4,k4,k4,k4,k4,g,k4,s4],[v3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,k3,v3,k3,k3,k3,k3,v3,k3,g,s3],[u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,u,1]])
 
@@ -38,5 +38,5 @@ for i in range(0,26):
 		somma = somma+plettere[i][j]
 	print(somma)
 
-numpy.savetxt('/home/federica/Documenti/Rotuladores/misspelling/matrice.txt', plettere, delimiter=',')
+numpy.savetxt('/home/ld/Desktop/misspelling/matrice.txt', plettere, delimiter=',')
 

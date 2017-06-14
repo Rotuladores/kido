@@ -136,13 +136,13 @@ class hmm():
 		self.sequence = []
 
 		self.word_edit = {}
-		
+
 		self.word_edit[sequence[0]] = self.sd.edit_search(sequence[0], max_edit)[:search_edit]
 		self.word_edit = self.check_word_edit(self.word_edit, search_edit, self.sd)
 
 		# Prior
 		for i in range(search_edit):
-			self.prob[i,0] = np.log(self.get_prior(self.word_edit[sequence[0]][i])) + np.log(self.calculate_observation(sequence[0], self.word_edit[sequence[0]][i]))
+			self.prob[i,0] = np.log(self.get_prior(self.word_edit[sequence[0]][i].split('+')[0])) + np.log(self.calculate_observation(sequence[0], self.word_edit[sequence[0]][i]))
 			self.path[i,0] = i
 
 		self.sequence.append(sequence[0])
@@ -177,7 +177,7 @@ class hmm():
 		j = self.prob.shape[1] - 1
 
 		for i in range(search_edit):
-				r = [self.prob[k, j-1] + np.log(self.get_transition(self.word_edit[self.sequence[j-1]][k], self.word_edit[self.sequence[j]][i]))
+				r = [self.prob[k, j-1] + np.log(self.get_transition(self.word_edit[self.sequence[j-1]][k].split('+')[-1], self.word_edit[self.sequence[j]][i].split('+')[0]))
 					+ np.log(self.calculate_observation(self.sequence[j], self.word_edit[self.sequence[j]][i])) for k in range(search_edit)]
 
 				m = max(r)
@@ -211,6 +211,7 @@ class hmm():
 		data = data.replace(' _not','n\'t')
 		data = data.replace(' _s','\'s')
 		data = data.replace(' _d','\'d')
+		data = data.replace('+',' ')
 		final = data.split()
 
 		return (final, np.exp(m))
@@ -245,12 +246,12 @@ class hmm():
 
 		# Prior
 		for i in range(search_edit):
-			prob[i,0] = np.log(self.get_prior(word_edit[sequence[0]][i])) + np.log(self.calculate_observation(sequence[0], word_edit[sequence[0]][i]))
+			prob[i,0] = np.log(self.get_prior(word_edit[sequence[0]][i].split('+')[0])) + np.log(self.calculate_observation(sequence[0], word_edit[sequence[0]][i]))
 			path[i,0] = i
 		# Dynamic
 		for j in range(1, len(sequence)):
 			for i in range(search_edit):
-				r = [prob[k, j-1] + np.log(self.get_transition(word_edit[sequence[j-1]][k], word_edit[sequence[j]][i]))
+				r = [prob[k, j-1] + np.log(self.get_transition(word_edit[sequence[j-1]][k].split('+')[-1], word_edit[sequence[j]][i].split('+')[0]))
 					+ np.log(self.calculate_observation(sequence[j], word_edit[sequence[j]][i])) for k in range(search_edit)]
 
 				m = max(r)
@@ -294,6 +295,7 @@ class hmm():
 		data = data.replace(' _not','n\'t')
 		data = data.replace(' _s','\'s')
 		data = data.replace(' _d','\'d')
+		data = data.replace('+',' ')
 		final = data.split()
 
 		return (final, np.exp(m))
@@ -321,21 +323,50 @@ class hmm():
 
 		ret = 1
 
-		align = pairwise2.align.globalxx(real, obs)[0]
-		areal = align[0]
-		aobs = align[1]
-		if len(obs) != len(real):
-			for c in range(0,len(aobs)):
-				ret *= self.perturbation[self.get_index(aobs[c]), self.get_index(areal[c])]
-		else:
-			ret1 = 1
-			for c in range(0,len(aobs)):
-				ret1 *= self.perturbation[self.get_index(aobs[c]), self.get_index(areal[c])]
+		if '+' in real:
+			real = real.replace('+','-')
+			retl = []
+			l = len(obs)
+			sobs = obs[0:1]+'-'+obs[1:]
+			if len(sobs) == len(real):
+				for i in range(2,l):
+					rett = 1
+					sobs = obs[0:i]+'-'+obs[i:]
+					for c in range(0,len(sobs)):
+						rett *= self.perturbation[self.get_index(sobs[c]), self.get_index(real[c])]
+					#print(real + ' ' + sobs + ' ' + str(rett))
+					retl.append(rett)
+				ret = max(retl)
 				
-			ret2 = 1
-			for c in range(0,len(obs)):
-				ret2 *= self.perturbation[self.get_index(obs[c]), self.get_index(real[c])]
-			ret = max([ret1,ret2])
+			else:
+				for i in range(1,l):
+					rett = 1
+					sobs = obs[0:i]+'-'+obs[i:]
+					align = pairwise2.align.globalxx(real, sobs)[0]
+					sreal = align[0]
+					sobs = align[1]
+					for c in range(0,len(sobs)):
+						rett *= self.perturbation[self.get_index(sobs[c]), self.get_index(sreal[c])]
+					retl.append(rett)
+				ret = max(retl)
+				# print(real + ' ' + sreal + ' ' + sobs + ' ' + str(ret))
+		else:
+			align = pairwise2.align.globalxx(real, obs)[0]
+			areal = align[0]
+			aobs = align[1]
+			if len(obs) != len(real):
+				for c in range(0,len(aobs)):
+					ret *= self.perturbation[self.get_index(aobs[c]), self.get_index(areal[c])]
+			else:
+				ret1 = 1
+				for c in range(0,len(aobs)):
+					ret1 *= self.perturbation[self.get_index(aobs[c]), self.get_index(areal[c])]
+
+				ret2 = 1
+				for c in range(0,len(obs)):
+					ret2 *= self.perturbation[self.get_index(obs[c]), self.get_index(real[c])]
+				ret = max([ret1,ret2])
+			#print(real + ' ' + obs + ' ' + str(ret))
 		return ret
 
 	@staticmethod
@@ -369,9 +400,6 @@ def test():
 	print(net.get_transition('it', 'sleep'))
 	# absent at all
 	print(net.get_transition('ittto', 'sleep'))
-
-
-
 
 
 if __name__ == '__main__':

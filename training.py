@@ -5,7 +5,7 @@ import os
 
 path = 'training_set/'
 
-sd = SmartDictionary(SmartDictionary.SMART_WORDSEN)
+sd = SmartDictionary(SmartDictionary.SMART_WORDSEN_BIGRAM)
 net = hmm()
 training_set = []
 for root, dirs, files in os.walk(path):
