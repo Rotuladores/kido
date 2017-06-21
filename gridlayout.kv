@@ -1,6 +1,9 @@
 <GridLayout>:
 	label_wid: lab
 	text_wid: entry
+	b1_wid: b1
+	b2_wid: b2
+	b3_wid: b3
 	rows: 3
 	display:entry
 	spacing: 0
@@ -28,15 +31,15 @@
 			id: b1
 			text: "first one"
 			width: 200
-			on_press: lab.text='b1'
+			on_press: root.change_prob(1)
 		Button:
 			id: b2
 			text: "second one"
 			width: 200
-			on_press: lab.text='b2'
+			on_press: root.change_prob(2)
 		Button:
 			id: b3
 			text: "third one"
 			width: 200
-			on_press: root.do_action()
+			on_press: root.change_prob(3)
 	
