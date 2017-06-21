@@ -152,7 +152,7 @@ class hmm():
 		return(self.reconstruct_viterbi())
 
 
-	def add_viterbi_layer(self, max_edit, search_edit, new_word):
+	def add_viterbi_layer(self, max_edit, search_edit, new_word, auto_reconstruct=True):
 		new_prob = np.zeros((search_edit, 1))
 		new_path = np.zeros((search_edit, 1))
 
@@ -187,22 +187,23 @@ class hmm():
 
 		if len(sequence) > 1:
 			return(self.add_viterbi_layer(max_edit, search_edit, sequence[1]))
-
-		return(self.reconstruct_viterbi())
+		if auto_reconstruct:
+			return(self.reconstruct_viterbi())
 
 
 	def reconstruct_viterbi(self):
 		fpath = [0] * len(self.sequence)
+		
 		m = max(self.prob[:,len(self.sequence)-1])
 		p = np.argmax(self.prob[:,len(self.sequence)-1])
 		fpath[len(self.sequence)-1] = p
 		final = [self.word_edit[self.sequence[len(self.sequence)-1]][p]]
-
+		
 		for i in range(len(self.sequence)-2, -1, -1):
 			fpath[i] = int(self.path[fpath[i+1], i+1])
 			final.insert(0, self.word_edit[self.sequence[i]][fpath[i]])
 			m += self.prob[fpath[i+1], i+1]
-
+		
 		data = ' '.join(final)
 		data = data.replace(' _will', '\'ll')
 		data = data.replace(' _am', '\'m')
@@ -215,6 +216,28 @@ class hmm():
 		final = data.split()
 
 		return (final, np.exp(m))
+
+	def reconstruct_viterbi_index(self, p):
+		fpath = [0] * len(self.sequence)
+		fpath[len(self.sequence)-1] = p
+		final = [self.word_edit[self.sequence[len(self.sequence)-1]][p]]
+		
+		for i in range(len(self.sequence)-2, -1, -1):
+			fpath[i] = int(self.path[fpath[i+1], i+1])
+			final.insert(0, self.word_edit[self.sequence[i]][fpath[i]])
+		
+		data = ' '.join(final)
+		data = data.replace(' _will', '\'ll')
+		data = data.replace(' _am', '\'m')
+		data = data.replace(' _are','\'re')
+		data = data.replace(' _have','\'ve')
+		data = data.replace(' _not','n\'t')
+		data = data.replace(' _s','\'s')
+		data = data.replace(' _d','\'d')
+		data = data.replace('+',' ')
+		final = data.split()
+
+		return (final)
 
 	def viterbi(self, max_edit, search_edit, sequence, smart_dictionary, draw=False):
 		if not self.trained:
