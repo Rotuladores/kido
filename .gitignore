@@ -7,7 +7,8 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
-
+*~
+\#*\#
 
 # Compiled and other stuff #
 .Rhistory
