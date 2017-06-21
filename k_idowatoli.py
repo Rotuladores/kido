@@ -32,20 +32,37 @@ class GridLayout(GridLayout):
 	def whitelist_chars(self, text):
 		if len(text) > 0:
 			if text[-1] == ' ':
+				print('Attivazione')
 				self.correct()
 
 	def correct(self):
-		# print(self.vitello)
 		inserted = self.text_wid.text.split()
-		# print(len(inserted))
-		# print(inserted)
-		# print(self.previous_len)
+		print(inserted)
 		if len(inserted) == 1:
 			correct, _ = self.net.build_viterbi(2, 25, inserted[0], self.sd)
-			# print(correct)
-			self.previous_len = 1
-			self.label_wid.text = ' '.join(correct)
-			self.b1_wid.text = ' '.join(correct)
+			self.net.prob
+			col = self.net.prob[:, -1]
+			p = np.argsort(col)
+			l = {}
+			for i in range(0, len(p)):
+				l[' '.join(self.net.reconstruct_viterbi_index(
+					p[i])[-2:])] = (col[p[i]], p[i])
+			sorted_l = sorted(
+				l.items(), key=operator.itemgetter(1), reverse=True)
+			correct1_label = self.net.reconstruct_viterbi_index(p[-1])
+			correct1 = sorted_l[0][0]
+			correct2 = sorted_l[1][0]
+			correct3 = sorted_l[2][0]
+			print(correct1_label)
+			self.previous_len += 1
+			self.label_wid.text = ' '.join(correct1_label)
+			self.b1_wid.text = ''.join(correct1)
+			self.index_change = []
+			self.index_change.append(sorted_l[0][1][1])
+			self.b2_wid.text = ''.join(correct2)
+			self.index_change.append(sorted_l[1][1][1])
+			self.b3_wid.text = ''.join(correct3)
+			self.index_change.append(sorted_l[2][1][1])
 		elif len(inserted) == self.previous_len + 1:
 			self.net.add_viterbi_layer(2, 25, inserted[-1], auto_reconstruct=False)
 			# ordino e prendo i 3 max
@@ -71,6 +88,7 @@ class GridLayout(GridLayout):
 			# print(correct1)
 			# print(correct2)
 			# print(correct3)
+			print(correct1_label)
 			self.previous_len += 1
 			self.label_wid.text = ' '.join(correct1_label)
 			self.b1_wid.text = ''.join(correct1)
@@ -81,6 +99,7 @@ class GridLayout(GridLayout):
 			self.b3_wid.text = ''.join(correct3)
 			self.index_change.append(sorted_l[2][1][1])
 		else:
+			print('fafaa')
 			return
 
 	def change_prob(self, index):
