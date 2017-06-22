@@ -7527,7 +7527,6 @@ bashfully
 bashfulness
 bashing
 basic
-basic's
 basically
 basicity
 basics
@@ -14986,7 +14985,6 @@ centenary
 centennial
 centennials
 center
-center's
 centerboard
 centerboards
 centered
@@ -21287,7 +21285,6 @@ countrywoman
 countrywomen
 counts
 county
-county's
 coup
 coupe
 couped
@@ -28500,7 +28497,6 @@ dominos
 dominus
 doms
 don
-don't
 dona
 donald
 donate
@@ -29590,7 +29586,6 @@ dun
 dunce
 dunces
 dundee
-dundee's
 dunderhead
 dunderheads
 dunderpate
@@ -41284,7 +41279,6 @@ governess
 governesses
 governing
 government
-government's
 governmental
 governments
 governor
@@ -48483,7 +48477,6 @@ industrious
 industriously
 industriousness
 industry
-industry's
 indwell
 indwelling
 indwells
@@ -60409,7 +60402,6 @@ modality
 modally
 mode
 model
-model's
 modeled
 modeler
 modelers
@@ -60911,7 +60903,6 @@ montevideo
 montezuma
 montgomery
 month
-month's
 monthlies
 monthly
 months
@@ -64309,7 +64300,6 @@ novels
 novelties
 novelty
 november
-november's
 novena
 novenae
 novenas
@@ -65027,7 +65017,6 @@ octets
 octette
 octettes
 october
-october's
 octogenarian
 octogenarians
 octopi
@@ -65597,7 +65586,6 @@ operatically
 operatics
 operating
 operation
-operation's
 operational
 operationally
 operations
@@ -65901,7 +65889,6 @@ organisms
 organist
 organists
 organization
-organization's
 organizational
 organizationally
 organizations
@@ -91961,7 +91948,6 @@ stat
 statable
 statal
 state
-state's
 stateable
 statecraft
 stated
@@ -93210,7 +93196,6 @@ studiously
 studiousness
 studs
 study
-study's
 studying
 stuff
 stuffed
@@ -106852,8 +106837,6 @@ waywardly
 waywardness
 wayworn
 we
-we're
-we've
 weak
 weaken
 weakened
@@ -109071,7 +109054,6 @@ ye
 yea
 yeah
 year
-year's
 yearbook
 yearbooks
 yearlies
@@ -109248,7 +109230,6 @@ yorker
 yorkers
 yosemite
 you
-you'd
 young
 younger
 youngers

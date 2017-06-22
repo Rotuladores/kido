@@ -50,7 +50,7 @@ right_phrases = list(map(lambda x: x.strip(),phrases))
 while right_phrases.count('') > 0:
     right_phrases.remove('')
 
-matrix = np.loadtxt('matrice_fede.txt', delimiter=',')
+matrix = np.loadtxt('matrice_9.txt', delimiter=',')
 
 wrong_phrases = [''] * len(right_phrases)
 checked_phrases = [''] * len(right_phrases)
