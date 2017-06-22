@@ -187,10 +187,10 @@ class GridLayout(GridLayout):
 		# print(self.net.prob)
 
 
-class GridLayoutApp(App):
+class KidoApp(App):
     def build(self):
         return GridLayout()
 
 
-prova = GridLayoutApp()
+prova = KidoApp()
 prova.run()

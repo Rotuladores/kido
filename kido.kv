@@ -1,0 +1,45 @@
+<GridLayout>:
+	label_wid: lab
+	text_wid: entry
+	b1_wid: b1
+	b2_wid: b2
+	b3_wid: b3
+	rows: 3
+	display:entry
+	spacing: 0
+	padding: 10
+	row_force_default: True
+	row_default_height: 50
+
+	BoxLayout:
+		Label:
+			id: lab
+			text: "..."
+		    text_size: self.size
+		    halign: 'center'
+		    valign: 'middle'
+		    
+
+	BoxLayout:
+		TextInput:
+			id: entry
+			font_size: 16
+			multiline: False
+			on_text: root.whitelist_chars(entry.text)
+	BoxLayout:
+		Button:
+			id: b1
+			text: "first one"
+			width: 200
+			on_press: root.change_prob(1)
+		Button:
+			id: b2
+			text: "second one"
+			width: 200
+			on_press: root.change_prob(2)
+		Button:
+			id: b3
+			text: "third one"
+			width: 200
+			on_press: root.change_prob(3)
+	
