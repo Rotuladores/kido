@@ -39,8 +39,9 @@ class GridLayout(GridLayout):
 		inserted = self.text_wid.text.split()
 		#print(inserted)
 		if len(inserted) == 1:
+			#print('init ' + str(self.previous_len))
 			correct, _ = self.net.build_viterbi(2, 25, inserted[0], self.sd)
-			self.net.prob
+			#print(self.net.prob)
 			col = self.net.prob[:, -1]
 			p = np.argsort(col)
 			l = {}
@@ -76,9 +77,10 @@ class GridLayout(GridLayout):
 			except:
 				self.index_change.append(sorted_l[0][1][1])
 		elif len(inserted) == self.previous_len + 1:
+			#print('goz ' + str(self.previous_len))
 			self.net.add_viterbi_layer(2, 25, inserted[-1], auto_reconstruct=False)
 			# ordino e prendo i 3 max
-			self.net.prob
+			#print(self.net.prob)
 			col = self.net.prob[:, -1]
 			# print(col)
 			p = np.argsort(col)
@@ -124,6 +126,8 @@ class GridLayout(GridLayout):
 				self.index_change.append(sorted_l[0][1][1])
 		else:
 			self.net.prob = self.net.prob[:,:-1]
+			#print('faafaa ' + str(self.previous_len))
+			#print(self.net.prob)
 			self.net.path = self.net.path[:,:-1]
 			self.net.sequence = self.net.sequence[:-1] 
 			col = self.net.prob[:, -1]
@@ -148,8 +152,13 @@ class GridLayout(GridLayout):
 				correct3 = '-'
 
 			#print('faafaaa: ' + str(correct1_label))
-			if self.previous_len > 0:
-				self.previous_len -= 1
+			if self.previous_len > 1:
+				if self.previous_len == len(inserted)+1:
+					self.previous_len -= 2
+				else:
+					self.previous_len -= 1 
+				if self.previous_len <= 1:
+					self.previous_len = -1
 			self.label_wid.text = ' '.join(correct1_label)
 			self.b1_wid.text = ''.join(correct1)
 			self.index_change = []
