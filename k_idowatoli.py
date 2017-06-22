@@ -61,7 +61,7 @@ class GridLayout(GridLayout):
 			except:
 				correct3 = '-'
 			#print(correct1_label)
-			self.previous_len += 1
+			self.previous_len = 1
 			self.label_wid.text = ' '.join(correct1_label)
 			self.b1_wid.text = ''.join(correct1)
 			self.index_change = []
@@ -124,12 +124,21 @@ class GridLayout(GridLayout):
 				self.index_change.append(sorted_l[2][1][1])
 			except:
 				self.index_change.append(sorted_l[0][1][1])
+		elif len(inserted) == self.previous_len:
+			pass
+			#print('fuu ' + str(self.previous_len))
 		else:
-			self.net.prob = self.net.prob[:,:-1]
 			#print('faafaa ' + str(self.previous_len))
 			#print(self.net.prob)
-			self.net.path = self.net.path[:,:-1]
-			self.net.sequence = self.net.sequence[:-1] 
+			if '_' not in self.net.sequence[-1]:
+				self.net.sequence = self.net.sequence[:-1] 
+				self.net.path = self.net.path[:,:-1]
+				self.net.prob = self.net.prob[:,:-1]
+			else:
+				self.net.sequence = self.net.sequence[:-2]
+				self.net.path = self.net.path[:,:-2]
+				self.net.prob = self.net.prob[:,:-2]
+			#print('sequenza ' + str(self.net.sequence))
 			col = self.net.prob[:, -1]
 			# print(col)
 			p = np.argsort(col)
@@ -151,10 +160,10 @@ class GridLayout(GridLayout):
 			except:
 				correct3 = '-'
 
-			#print('faafaaa: ' + str(correct1_label))
+			#print('faafaa: ' + str(correct1_label))
 			if self.previous_len > 1:
 				if self.previous_len == len(inserted)+1:
-					self.previous_len -= 2
+					self.previous_len -= 1
 				else:
 					self.previous_len -= 1 
 				if self.previous_len <= 1:
