@@ -215,7 +215,7 @@ class hmm():
 		data = data.replace('+',' ')
 		final = data.split()
 
-		return (final, np.exp(m))
+		return (final, m)
 
 	def reconstruct_viterbi_index(self, p):
 		fpath = [0] * len(self.sequence)
@@ -321,7 +321,7 @@ class hmm():
 		data = data.replace('+',' ')
 		final = data.split()
 
-		return (final, np.exp(m))
+		return (final, m)
 
 	@staticmethod
 	def check_word_edit(word_edit, N, sd):

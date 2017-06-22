@@ -32,7 +32,7 @@ class GridLayout(GridLayout):
 	def whitelist_chars(self, text):
 		if len(text) > 0:
 			if text[-1] == ' ':
-				print('Attivazione')
+				#print('Attivazione')
 				self.correct()
 
 	def correct(self):
