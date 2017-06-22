@@ -36,6 +36,7 @@ class GridLayout(GridLayout):
 				self.correct()
 
 	def correct(self):
+		global sd
 		inserted = self.text_wid.text.split()
 		#print(inserted)
 		if len(inserted) == 1:
@@ -125,7 +126,60 @@ class GridLayout(GridLayout):
 			except:
 				self.index_change.append(sorted_l[0][1][1])
 		elif len(inserted) == self.previous_len:
-			pass
+			if '_' not in self.net.sequence[-1]:
+				self.net.sequence = self.net.sequence[:-1] 
+				self.net.path = self.net.path[:,:-1]
+				self.net.prob = self.net.prob[:,:-1]
+			else:
+				self.net.sequence = self.net.sequence[:-2]
+				self.net.path = self.net.path[:,:-2]
+				self.net.prob = self.net.prob[:,:-2]
+			self.net.add_viterbi_layer(2, 25, inserted[-1], auto_reconstruct=False)
+			# ordino e prendo i 3 max
+			#print(self.net.prob)
+			col = self.net.prob[:, -1]
+			# print(col)
+			p = np.argsort(col)
+			l = {}
+			for i in range(0, len(p)):
+				l[' '.join(self.net.reconstruct_viterbi_index(
+					p[i])[-2:])] = (col[p[i]], p[i])
+			sorted_l = sorted(
+				l.items(), key=operator.itemgetter(1), reverse=True)
+			# print(self.net.reconstruct_viterbi_index(p[-1]))
+			# print(sorted_l)
+			# print(sorted_l[2][0])
+			correct1_label = self.net.reconstruct_viterbi_index(p[-1])
+			#correct2 = self.net.reconstruct_viterbi_index(p[-2])[-2:]
+			#correct3 = self.net.reconstruct_viterbi_index(p[-3])[-2:]
+			correct1 = sorted_l[0][0]
+			try:
+				correct2 = sorted_l[1][0]
+			except:
+				correct2 = '-'
+			try:
+				correct3 = sorted_l[2][0]
+			except:
+				correct3 = '-'
+			# print(correct1)
+			# print(correct2)
+			# print(correct3)
+			#print(correct1_label)
+			#self.previous_len += 1
+			self.label_wid.text = ' '.join(correct1_label)
+			self.b1_wid.text = ''.join(correct1)
+			self.index_change = []
+			self.index_change.append(sorted_l[0][1][1])
+			self.b2_wid.text = ''.join(correct2)
+			try:
+				self.index_change.append(sorted_l[1][1][1])
+			except:
+				self.index_change.append(sorted_l[0][1][1])
+			self.b3_wid.text = ''.join(correct3)
+			try:
+				self.index_change.append(sorted_l[2][1][1])
+			except:
+				self.index_change.append(sorted_l[0][1][1])
 			#print('fuu ' + str(self.previous_len))
 		else:
 			#print('faafaa ' + str(self.previous_len))
