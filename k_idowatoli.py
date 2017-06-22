@@ -37,7 +37,7 @@ class GridLayout(GridLayout):
 
 	def correct(self):
 		inserted = self.text_wid.text.split()
-		print(inserted)
+		#print(inserted)
 		if len(inserted) == 1:
 			correct, _ = self.net.build_viterbi(2, 25, inserted[0], self.sd)
 			self.net.prob
@@ -51,18 +51,30 @@ class GridLayout(GridLayout):
 				l.items(), key=operator.itemgetter(1), reverse=True)
 			correct1_label = self.net.reconstruct_viterbi_index(p[-1])
 			correct1 = sorted_l[0][0]
-			correct2 = sorted_l[1][0]
-			correct3 = sorted_l[2][0]
-			print(correct1_label)
+			try:
+				correct2 = sorted_l[1][0]
+			except:
+				correct2 = '-'
+			try:
+				correct3 = sorted_l[2][0]
+			except:
+				correct3 = '-'
+			#print(correct1_label)
 			self.previous_len += 1
 			self.label_wid.text = ' '.join(correct1_label)
 			self.b1_wid.text = ''.join(correct1)
 			self.index_change = []
 			self.index_change.append(sorted_l[0][1][1])
 			self.b2_wid.text = ''.join(correct2)
-			self.index_change.append(sorted_l[1][1][1])
+			try:
+				self.index_change.append(sorted_l[1][1][1])
+			except:
+				self.index_change.append(sorted_l[0][1][1])
 			self.b3_wid.text = ''.join(correct3)
-			self.index_change.append(sorted_l[2][1][1])
+			try:
+				self.index_change.append(sorted_l[2][1][1])
+			except:
+				self.index_change.append(sorted_l[0][1][1])
 		elif len(inserted) == self.previous_len + 1:
 			self.net.add_viterbi_layer(2, 25, inserted[-1], auto_reconstruct=False)
 			# ordino e prendo i 3 max
@@ -83,24 +95,75 @@ class GridLayout(GridLayout):
 			#correct2 = self.net.reconstruct_viterbi_index(p[-2])[-2:]
 			#correct3 = self.net.reconstruct_viterbi_index(p[-3])[-2:]
 			correct1 = sorted_l[0][0]
-			correct2 = sorted_l[1][0]
-			correct3 = sorted_l[2][0]
+			try:
+				correct2 = sorted_l[1][0]
+			except:
+				correct2 = '-'
+			try:
+				correct3 = sorted_l[2][0]
+			except:
+				correct3 = '-'
 			# print(correct1)
 			# print(correct2)
 			# print(correct3)
-			print(correct1_label)
+			#print(correct1_label)
 			self.previous_len += 1
 			self.label_wid.text = ' '.join(correct1_label)
 			self.b1_wid.text = ''.join(correct1)
 			self.index_change = []
 			self.index_change.append(sorted_l[0][1][1])
 			self.b2_wid.text = ''.join(correct2)
-			self.index_change.append(sorted_l[1][1][1])
+			try:
+				self.index_change.append(sorted_l[1][1][1])
+			except:
+				self.index_change.append(sorted_l[0][1][1])
 			self.b3_wid.text = ''.join(correct3)
-			self.index_change.append(sorted_l[2][1][1])
+			try:
+				self.index_change.append(sorted_l[2][1][1])
+			except:
+				self.index_change.append(sorted_l[0][1][1])
 		else:
-			print('fafaa')
-			return
+			self.net.prob = self.net.prob[:,:-1]
+			self.net.path = self.net.path[:,:-1]
+			self.net.sequence = self.net.sequence[:-1] 
+			col = self.net.prob[:, -1]
+			# print(col)
+			p = np.argsort(col)
+			l = {}
+			for i in range(0, len(p)):
+				l[' '.join(self.net.reconstruct_viterbi_index(
+					p[i])[-2:])] = (col[p[i]], p[i])
+			sorted_l = sorted(
+				l.items(), key=operator.itemgetter(1), reverse=True)
+
+			correct1_label = self.net.reconstruct_viterbi_index(p[-1])
+			correct1 = sorted_l[0][0]
+			try:
+				correct2 = sorted_l[1][0]
+			except:
+				correct2 = '-'
+			try:
+				correct3 = sorted_l[2][0]
+			except:
+				correct3 = '-'
+
+			#print('faafaaa: ' + str(correct1_label))
+			if self.previous_len > 0:
+				self.previous_len -= 1
+			self.label_wid.text = ' '.join(correct1_label)
+			self.b1_wid.text = ''.join(correct1)
+			self.index_change = []
+			self.index_change.append(sorted_l[0][1][1])
+			self.b2_wid.text = ''.join(correct2)
+			try:
+				self.index_change.append(sorted_l[1][1][1])
+			except:
+				self.index_change.append(sorted_l[0][1][1])
+			self.b3_wid.text = ''.join(correct3)
+			try:
+				self.index_change.append(sorted_l[2][1][1])
+			except:
+				self.index_change.append(sorted_l[0][1][1])
 
 	def change_prob(self, index):
 		k = self.index_change[index - 1]
