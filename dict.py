@@ -38,7 +38,7 @@ for w in supersmart:
 		actual_len = len(w)
 	i+=1
 
-with open('smart_wordsen_bigram.dat', 'w+') as fo:
+with open('dictionary/smart_wordsen_bigram.dat', 'w+') as fo:
 	fo.write('#32\n')
 	len_line = '#'
 	for k in range(32):
