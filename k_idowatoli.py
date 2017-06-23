@@ -10,8 +10,8 @@ from smartdictionary import SmartDictionary
 import numpy as np
 import operator
 
-Config.set('graphics', 'width', '600')
-Config.set('graphics', 'height', '200')
+Config.set('graphics', 'width', '680')
+Config.set('graphics', 'height', '170')
 
 
 class GridLayout(GridLayout):

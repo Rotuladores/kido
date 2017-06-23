@@ -15,7 +15,10 @@
 		Label:
 			id: lab
 			text: "..."
+			font_size: 17
 		    text_size: self.size
+			bold: True
+			color: [0.298,0.564,1,1]
 		    halign: 'center'
 		    valign: 'middle'
 		    
@@ -29,16 +32,28 @@
 	BoxLayout:
 		Button:
 			id: b1
+			background_color: [0,0,0,0]
+			color: [0.286,1,0.176,1]
+			font_size: 17
+			bold: True
 			text: "first one"
 			width: 200
 			on_press: root.change_prob(1)
 		Button:
 			id: b2
+			background_color: [0,0,0,0]
+			color: [1,0.968,0.168,1]
+			font_size: 17
+			bold: True
 			text: "second one"
 			width: 200
 			on_press: root.change_prob(2)
 		Button:
 			id: b3
+			background_color: [0,0,0,0]
+			color: [1,0,0,1]
+			font_size: 17
+			bold: True
 			text: "third one"
 			width: 200
 			on_press: root.change_prob(3)
