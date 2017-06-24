@@ -238,16 +238,19 @@ class GridLayout(GridLayout):
 				self.index_change.append(sorted_l[0][1][1])
 
 	def change_prob(self, index):
-		k = self.index_change[index - 1]
-		# print(k)
-		# print(self.net.prob)
-		for i in range(self.net.prob.shape[0]):
-			if i == k:
-				self.net.prob[i, self.net.prob.shape[1] - 1] = 1e10
-			else:
-				self.net.prob[i, self.net.prob.shape[1] - 1] = -1e-40
-		self.label_wid.text = ' '.join(self.net.reconstruct_viterbi()[0])
-		# print(self.net.prob)
+		try:
+			k = self.index_change[index - 1]
+			# print(k)
+			# print(self.net.prob)
+			for i in range(self.net.prob.shape[0]):
+				if i == k:
+					self.net.prob[i, self.net.prob.shape[1] - 1] = 1e10
+				else:
+					self.net.prob[i, self.net.prob.shape[1] - 1] = -1e-40
+			self.label_wid.text = ' '.join(self.net.reconstruct_viterbi()[0])
+			# print(self.net.prob)
+		except:
+			pass
 
 
 class KidoApp(App):
