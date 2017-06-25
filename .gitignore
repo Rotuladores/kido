@@ -21,3 +21,17 @@ __pycache__/*
 draw.png
 .vscode/*
 .vscode
+
+# Latex compiled and intermediate #
+
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
