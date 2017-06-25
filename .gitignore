@@ -17,7 +17,7 @@ Thumbs.db
 .Rhistory
 __pycache__/*
 *.pyc
-*_test.pkl
+#*_test.pkl
 draw.png
 .vscode/*
 .vscode
