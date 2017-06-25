@@ -9,10 +9,13 @@ ehthumbs.db
 Thumbs.db
 *~
 \#*\#
+.texpadtmp/*
+.texpadtmp
+
 
 # Compiled and other stuff #
 .Rhistory
-__pycahce__/*
+__pycache__/*
 *.pyc
 *_test.pkl
 draw.png
