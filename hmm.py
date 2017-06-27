@@ -341,7 +341,7 @@ class hmm():
 		from Bio import pairwise2
 
 		if obs[0] == '_':
-			return 1
+			return 1e10
 		#print(obs + ' ' + real)
 
 		ret = 1
