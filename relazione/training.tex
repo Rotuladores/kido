@@ -1,5 +1,22 @@
 \section{Training}
-
+\label{sec:training}
+La fase di training ci ha permesso di ricavare la probabilità a priori delle parole osservate e la matrice di transizione da una parola ad un’altra. 
+In un primo momento abbiamo eseguito il preprocessing sui testi, oltre a quello sulle singole parole descritto in ~\ref{sec:preproc}: abbiamo spezzato i testi in proposizioni in presenza dei caratteri . ; ? ! e abbiamo eliminato tutte le proposizioni che contenevano caratteri speciali, numeri o parole non appartenenti al dizionario. Dai testi così processati abbiamo ricavato la probabilità a priori contando il numero di volte in cui ogni parola compare come prima della frase, assegnando una costante $\pi =2*10^{-4}$ come probabilità a priori delle parole senza osservazioni e normalizzando in modo che la somma delle entrate del vettore facesse 1. Analogamente abbiamo ricavato la matrice di transizione contando il numero di volte in cui due parole sono consecutive in una proposizione, impostando a $\alpha=10^{-5}$ la probabilità di una transizione non osservata e normalizzando in modo che la somma degli elementi di ogni riga facesse 1. 
+Infine abbiamo generato una lista di bigrammi, in cui sono state inserite tutte le coppie di parole consecutive distinte presenti nel training set.  
 \subsection{Training Set}
+Abbiamo scelto di utilizzare un training set costituito da:
+\begin{itemize}
+\item un set di articoli della BBC,
+\item alcuni libri da Project Gutenberg,
+\item altri libri (Harry Potter, Dune...).
+
+\end{itemize}
+Questa scelta è stata dettata dall'esigenza di apprendere su frasi che utilizzano un inglese moderno e sostanzialmente corretto. Abbiamo infatti evitato romanzi troppo datati che utilizzassero un linguaggio arcaico e frasi dalla messaggistica istantanea, cariche di neologismi e abbreviazioni.
 
 \subsection{Considerazioni}
+\paragraph*{Il problema dei nomi propri} 
+Abbiamo già evidenziato come ogni frase che contenesse parole non presenti nel dizionario venisse eliminata durante il preprocessing. Per fare in modo che questa scelta di progetto non risultasse troppo restrittiva, abbiamo integrato il dizionario con un dizionario dei nomi propri. 
+Questo ci ha permesso sia di mantenere un ampio range di frasi per allenare il nostro modello, sia di riconoscere i nomi nella fase di test successiva. A questo punto però si sono palesate altre problematiche, come la preponderanza di alcuni nomi rispetto ad altri nel training set. Nomi come ''Larry'' ad esempio, sono corretti con ''Harry'' a causa della saga di Harry Potter nel training set. Per ovviare a questo problema si potrebbe ampliare ulteriormente il training set, in questo modo l'ampia varietà di nomi che si andrebbe a formare riequilibrerebbe la situazione.
+
+\paragraph*{Possibili miglioramenti}
+Una fase di training più accurata potrebbe senz'altro portare a migliori risultati nella correzione. Oltre ad ampliare il training set, altri possibili miglioramenti si potrebbero ottenere dall'analisi grammaticale delle frasi, ad esempio sappiamo che il verbo non può mai seguire un articolo Un'idea potrebbe essere quella di inserire questo e altri vincoli grammaticali in modo da rendere più precisa la correzione.

@@ -4,6 +4,7 @@
 %----------------------------
 \usepackage{fullpage}
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage{babel}
 \usepackage{latexsym}
 \usepackage[leqno]{amsmath}
@@ -18,6 +19,9 @@
 \usetikzlibrary{trees,positioning,shapes} 
 % for listing source code files
 \usepackage{listings}
+\usepackage{hyperref}
+\usepackage{float}
+\restylefloat{table}
 
 %----------------------------
 %			TITLE
@@ -60,6 +64,11 @@
 \maketitle
 %\begin{multicols}{2}                                                
 
+\begin{itemize}
+  \item due parole su kido in generale
+  \item due parole sui requisisti dell'implementazione
+  \item due parole sull'interfaccia
+\end{itemize}
 
 \include{metodi}
 
@@ -67,7 +76,8 @@
 
 \include{test}
 
-
+\bibliography{biblio}{}
+\bibliographystyle{plain}
 
 %\end{multicols}
 \end{document}

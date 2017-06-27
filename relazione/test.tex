@@ -1,7 +1,28 @@
 \section{Testing}
+L'ultima fase del nostro progetto è stata quella di testing. Anche in questo caso abbiamo eseguito un piccolo preprocessing sul testo per eliminare la punteggiatura e trattare le parole con apostrofi come in  ~\ref{sec:preproc}. Utilizzando la matrice di perturbazione ~\ref{sec:pertu} abbiamo generato delle frasi con circa il 10\% di errore. Abbiamo valutato l'errore confrontando la correzione generata tramite il metodo Custom Viterbi ~\ref{sec:vitello} con la frase originale. \FA{io continuo a preferire super-vitello} \SC{anche io} In particolare l'errore viene calcolato in due modi:
+\begin{itemize}
+\item Verificando il numero di lettere corrette:
+\begin{enumerate}
+\item Per ogni frase si trova la distanza di edit fra la frase originale e quella perturbata;
+\item Si trova la distanza di edit fra la frase originale e quella corretta con Custom Viterbi;
+\item Si sommano fra loro i valori le distanze relative alla stessa tipologia di frase (perturbata e corretta);
+\item Il rapporto tra la distanza relativa alle frasi perturbate e la somma delle lunghezze delle frasi originali restituisce l'errore generato, mentre il rapporto tra la distanza relativa alle frasi corrette e la somma delle lunghezze delle frasi originali restituisce l'errore dopo la correzione.
+\end{enumerate}
+\item Verificando il numero di parole corrette:
+\begin{enumerate}
+\item Si contano le parole nelle frasi perturbate non  presenti  nelle frasi originali;
+\item Si contano le parole nelle frasi corrette non presenti nelle frasi originali;
+\item il rapporto fra il valore trovato al punto 1 e il numero di parole totali nelle frasi originali restituisce l'errore commesso perturbando;
+\item il rapporto fra il valore trovato al punto 2 e il numero di parole totali nelle frasi originali restituisce l'errore commesso dopo la correzione.
+\end{enumerate}
+\end{itemize}
 
 \subsection{Testing Set}
+Come testing set abbiamo utilizzato una parte del dataset Simple Test, che contiene brevi frasi in inglese con un lessico abbastanza variegato. In particolare, ne abbiamo testate 359.  \SC{referenza al dataset}
+\SC{Aumentare i test!!!! di piuuuuuuuuuuu}
 
 \subsection{Risultati}
+Coerentemente con il metodo di perturbazione utilizzato, l'errore generato è sempre intorno al 10\% sia per quanto riguarda l'errore sulle lettere che quello sulle parole. L'errore dopo la correzione invece in entrambi i casi è circa il 5\%. Questo vuol dire che tramite la correzione rimuoviamo circa il 50\% dell'errore commesso inizialmente. Questo miglioramento è apprezzabile, anche se potrebbe essere ulteriormente incrementato ad esempio migliorando la fase di training ~\ref{sec:training}. Anche la possibilità data al nostro ipotetico utente di contribuire alla correzione è stata implementata proprio per fornire una maggior accuratezza nell'applicazione pratica rispetto alla pure correzione automatica.
+\SC{Una bella tabellozza ci starebbe}
 
 \section{Sviluppi futuri}
