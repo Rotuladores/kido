@@ -70,7 +70,10 @@ for i in range(len(right_phrases)):
     flag = False
     for c in right_phrases[i]:
         if c != ' ':
-            sentence = sentence + np.random.choice(list(string.ascii_lowercase)+[''], p=matrix[(ord(c)-97),:])
+            if c != '_':
+            	sentence = sentence + np.random.choice(list(string.ascii_lowercase)+[''], p=matrix[(ord(c)-97),:])
+            else:
+            	sentence += '_'
         else:
             if np.random.uniform(low=0.0,high=1.0,size=None) > 0.9 and flag == False:
                 sentence = sentence + ''
