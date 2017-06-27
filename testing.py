@@ -24,7 +24,7 @@ def preprocess(path):
     data = data.replace('\'s',' _s')
     data = data.replace('\'d',' _d')
     for c in [',','(',')','[',']','"','“',
-            '-','|','»','«','<','>','—','/']:
+            '-','|','»','«','<','>','—','/','$','€','£']:
         data = data.replace(c,' ')
     data = data.replace('&','and')
 
@@ -44,7 +44,7 @@ with open('trained_test.pkl', 'rb') as finput:
 net = load_net
 sd = SmartDictionary(SmartDictionary.SMART_WORDSEN_BIGRAM)
 
-book = preprocess('simple_test.txt')
+book = preprocess('simple_text.txt')
 phrases = book.split('.')
 right_phrases = list(map(lambda x: x.strip(),phrases))
 while right_phrases.count('') > 0:
