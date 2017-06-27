@@ -44,7 +44,7 @@ with open('trained_test.pkl', 'rb') as finput:
 net = load_net
 sd = SmartDictionary(SmartDictionary.SMART_WORDSEN_BIGRAM)
 
-book = preprocess('simple_text.txt')
+book = preprocess('simple_test2.txt')
 phrases = book.split('.')
 right_phrases = list(map(lambda x: x.strip(),phrases))
 while right_phrases.count('') > 0:
