@@ -26,9 +26,15 @@
 %----------------------------
 %			TITLE
 %----------------------------
-\title{Kido}
-\author[1]{Curlo Botini}
-\affil[1]{Univorsita Bucocca}
+\title{Kido, an HMM-driven spelling corrector}
+\author[1]{Simone Ciccolella}
+\affil[1]{762234, s.ciccolella@campus.unimib.it}
+\author[2]{Federica Adobbati}
+\affil[1]{764300, f.adobbati@campus.unimib.it}
+\author[3]{Daniele Bellani}
+\affil[3]{780675, d.bellani1@campus.unimib.it}
+\author[4]{Francesco Canonaco}
+\affil[4]{781239, canonaco@harvard.edu, Full Professor at Harvard e capogruppo di ricerca presso Rotuladores}
 \date{\today}
 \setcounter{Maxaffil}{0}
 \renewcommand\Affilfont{\itshape\small}
@@ -63,18 +69,54 @@
 \begin{document}
 \maketitle
 %\begin{multicols}{2}                                                
+\textbf{Kido} \`e un correttore di testo in lingua inglese
+basato su \textit{Hidden Markov Models} e in particolare 
+sull'algoritmo di Viterbi. Il suo principio \`e ispirato al 
+correttore in \cite{7203984} in cui viene presentato un correttore
+che utilizza Viterbi e l'algoritmo di \textit{Forward-Backward} 
+in una HMM generata ad hoc per la correzzione. 
+Prendendo spunto dal suddetto articolo e da diversi algoritmi
+di confronto di stringhe abbiamo implementato un modello che,
+sebbene necessiti di ulteriore lavoro e completamento, ha gi\`a
+dei risultati molto promettenti, comparabili a lavori presenti
+in letteratura e, in alcuni casi, anche migliori.
+Inoltre, grazie al modo in cui \`e implementato, Kido \`e anche in 
+grado, ad ogni parola inserita, di suggerire all'utente tre possibili
+correzioni e aggiustare le probabilit\`a in coseguenza all'intervento
+dell'utente.
+
+
+Abbiamo implementato \textbf{Kido} con Python 3 nella sua interezza,
+per quando riguarda il core del programma
+ (\textit{SmartDictionary} e \textit{HMM}) \`e sufficiente che i file
+ad esso relativo siano presenti nella stessa directory del programma.
+Per poter utilizzare il programma da terminale sono necessarie le
+seguenti dipendenze:
 
 \begin{itemize}
-  \item due parole su kido in generale
-  \item due parole sui requisisti dell'implementazione
-  \item due parole sull'interfaccia
+  \item Python 3.5.2 +, \url{https://www.python.org}
+  \item edlib 1.1.2.post2 +, \url{https://pypi.python.org/pypi/edlib}
+  \item NumPy 1.12.1 + \url{http://www.numpy.org}
+  \item BioPython 1.69 +, \url{https://github.com/biopython/biopython.github.io/}
 \end{itemize}
 
-\include{metodi}
+Per l'interfaccia grafica abbiamo deciso di utilizzare il framework 
+multiplatform \textbf{Kivy} per Python, reperibile all'indirizzo
+\url{https://kivy.org/} che permette una forte customizzazione 
+dell'intera interfaccia oltre alla portabilit\`a su tutti i sistemi
+operativi, mobile inclusi. Di seguito mostriamo l'immagine
+di una classica esecuzione di Kido:\\
 
-\include{training}
+\begin{center}
+  \includegraphics[scale=.65]{img/interfaccia}
+\end{center}
 
-\include{test}
+
+\input{metodi}
+
+\input{training}
+
+\input{test}
 
 \bibliography{biblio}{}
 \bibliographystyle{plain}

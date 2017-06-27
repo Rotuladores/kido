@@ -1,5 +1,5 @@
 \section{Testing}
-L'ultima fase del nostro progetto è stata quella di testing. Anche in questo caso abbiamo eseguito un piccolo preprocessing sul testo per eliminare la punteggiatura e trattare le parole con apostrofi come in  ~\ref{sec:preproc}. Utilizzando la matrice di perturbazione ~\ref{sec:pertu} abbiamo generato delle frasi con circa il 10\% di errore. Abbiamo valutato l'errore confrontando la correzione generata tramite il metodo Custom Viterbi ~\ref{sec:vitello} con la frase originale. \FA{io continuo a preferire super-vitello} \SC{anche io} In particolare l'errore viene calcolato in due modi:
+L'ultima fase è stata quella di testing. Anche in questo caso abbiamo eseguito un piccolo preprocessing sul testo per eliminare la punteggiatura e trattare le parole con apostrofi come in  ~\ref{sec:preproc}. Utilizzando la matrice di perturbazione ~\ref{sec:pertu} abbiamo generato delle frasi con circa il 10\% di errore. Abbiamo valutato l'errore confrontando la correzione generata tramite il metodo Custom Viterbi ~\ref{sec:vitello} con la frase originale. \FA{io continuo a preferire super-vitello} \SC{anche io} In particolare l'errore viene calcolato in due modi:
 \begin{itemize}
 \item Verificando il numero di lettere corrette:
 \begin{enumerate}
@@ -18,11 +18,55 @@ L'ultima fase del nostro progetto è stata quella di testing. Anche in questo ca
 \end{itemize}
 
 \subsection{Testing Set}
-Come testing set abbiamo utilizzato una parte del dataset Simple Test, che contiene brevi frasi in inglese con un lessico abbastanza variegato. In particolare, ne abbiamo testate 359.  \SC{referenza al dataset}
+Come testing set abbiamo utilizzato una parte del dataset Simple Test, che contiene brevi frasi in inglese con un lessico abbastanza variegato. In particolare, ne abbiamo testate oltre 2000.  \SC{referenza al dataset}
 \SC{Aumentare i test!!!! di piuuuuuuuuuuu}
 
 \subsection{Risultati}
-Coerentemente con il metodo di perturbazione utilizzato, l'errore generato è sempre intorno al 10\% sia per quanto riguarda l'errore sulle lettere che quello sulle parole. L'errore dopo la correzione invece in entrambi i casi è circa il 5\%. Questo vuol dire che tramite la correzione rimuoviamo circa il 50\% dell'errore commesso inizialmente. Questo miglioramento è apprezzabile, anche se potrebbe essere ulteriormente incrementato ad esempio migliorando la fase di training ~\ref{sec:training}. Anche la possibilità data al nostro ipotetico utente di contribuire alla correzione è stata implementata proprio per fornire una maggior accuratezza nell'applicazione pratica rispetto alla pure correzione automatica.
+Coerentemente con il metodo di perturbazione utilizzato, l'errore generato è sempre intorno al 10\% sia per quanto riguarda l'errore sulle lettere che quello sulle parole. L'errore dopo la correzione invece in entrambi i casi è circa il 5\%. Questo vuol dire che tramite la correzione rimuoviamo circa il 50\% dell'errore commesso inizialmente. Questo miglioramento è apprezzabile, anche se potrebbe essere ulteriormente incrementato ad esempio migliorando la fase di training ~\ref{sec:training}. Anche la possibilità data al nostro ipotetico utente di contribuire alla correzione è stata implementata proprio per fornire una maggior accuratezza nell'applicazione pratica rispetto alla sola correzione automatica.
 \SC{Una bella tabellozza ci starebbe}
+\paragraph*{Esempi}
+Vediamo qualche esempio. Gli errori riportati si riferiscono al calcolo con la distanza di edit.
+\begin{enumerate}
+\item jim had two separate sheets of paper\\
+      jim yad tyosepcratd sheetsof paper\\
+      i had two separate sheets of paper\\
+\\
+\textbf{Errore generato} 0.1667\\
+\textbf{Errore correzione} 0.0556\\
+\\
+In questo esempio vediamo che ritorna il problema del riconoscimento del nome proprio. L'algoritmo riesce ad individuare e correggere tutte le perturbazioni nella frase, ma evidentemente la probabilità a priori di ''jim'' e la probabilità di transizione ''jim - had'' risultano inferiori rispettivamente a quella di ''i'', ''i - had''. Questo è sensato e dipende dal training set.
+\item the tv person said it was a big storm\\
+thetv person shid it was a bigztodm\\
+the tv person said it was a big storm\\
+\\
+\textbf{Errore generato} 0.1351\\
+\textbf{Errore correzione} 0\\
+\\
+In questo caso la correzione viene eseguita esattamente.
+\item mark sits in the front seat when he drives his new car\\
+mark sits in the frott uepy khef hedlives his new car\\
+mark sits in the front up he he lives his new car\\
+\\
+\textbf{Errore generato} 0.1481\\
+\textbf{Errore correzione} 0.1481\\
+\\
+In questo esempio l'algoritmo sbaglia la correzione. Questo avviene per l'elevata concentrazione di errori nello stesso intervallo della frase che rende difficile il riconoscimento delle delle parole corrette anche ad un lettore umano. In questo caso avrebbe forse migliorato la correzione l'apprendimento secondo regole della grammatica come spiegato in  ~\ref{sec:training}, così facendo ad esempio difficilmente ci sarebbe stato nella correzione ''he he''.
+\item when the hairdresser finished  susan looked at her hair\\
+whyn te hairdresserfinished sasan lookdd at her hair\\
+when he had finished a san looked at her hair\\
+\\
+\textbf{Errore generato} 0.0925\\
+\textbf{Errore correzione} 0.1011\\
+\\
+Questo esempio mostra un altro limite del correttore; non c'è motivo di immaginare che nel training set comparisse il bigramma ''hairdresser finished'' ed in effetti questo bigramma viene sostituito con ''had finished'', molto più comune sebbene abbastanza diverso.
+\end{enumerate}
 
 \section{Sviluppi futuri}
+Abbiamo fin qui presentato le nostre scelte implementative e i risultati del nostro progetto. Vediamo ora brevemente come ci immaginiamo che potrebbe essere ampliato e migliorato:
+\begin{itemize}
+\item Ottimizzazione del codice; nella costruzione dei metodi abbiamo già adottato alcuni accorgimenti per minimizzare la quantità di calcoli da eseguire, come ad esempio creare metodi appositi per non dover rieseguire ad ogni iterazione l'intero algoritmo di Viterbi ~\ref{sec:vitellolivello}, ma potrebbero essere apportabili ulteriori miglioramenti.
+\item Sviluppo della fase di preprocessing e di training, di cui abbiamo già parlato ~\ref{sec:training}.
+\item Gestione degli spazi intra-token (es. ''e xcercise''); per semplicità abbiamo supposto che quando ci fosse uno spazio, questo stesse ad indicare la fine di una parola o di un bigramma, con uno studio più approfondito del problema si potrebbe eliminare questa semplificazione.
+\item Gestione di un numero maggiore di spazi intra-token; per ogni parola; abbiamo supposto che l'utente dimenticasse al più di inserire uno spazio, si potrebbe aggiungere un analisi anche dei trigrammi o addirittura di quadrigrammi nel caso ne dimentichi un numero maggiore.
+\item Miglioramento dell'interfaccia; si potrebbe ad esempio aggiungere la possibilità di cambiare parole all'interno di una frase senza dover riscrivere tutto daccapo.    
+\end{itemize}

@@ -1,5 +1,14 @@
 \section{Metodi}
-VAGAMENTE COSA FA IL PROGRAMMA A MENO CHE NON SIA SCRITTO PRIMA
+In linea generale Kido legge in input una frase, per ogni parola
+cerca le parole pi\`u vicina ad essa in un dizionario precedente
+compilato. La parola in input viene poi allineata ad ognuna delle
+parole trovate e viene calcolata di probabilit\`a che la parola
+digitata sia, tra tutte quelle trovate, quella analizzata.
+In seguito calcola la probabilit\`a che la parola corretta si
+sussegua alla precedente parola nella frase (o che sia la prima 
+parola di una frase). Infine attraverso un algoritmo di Viterbi 
+modificato ad hoc, calcola la frase pi\`u corretta. 
+Vediamo ora in dettaglio le diverse fasi.
 
 \subsection{Preprocessing}
 \label{sec:preproc}
@@ -180,10 +189,8 @@ e concludendo con la tabella di probabilit\`a ad essa relativa:
   \end{tabular}
 \end{table}
 
-\
-
-
 \subsection{Layered Custom Viterbi}
+\label{sec:vitellolivello}
 L'algoritmo appena descritto, cos\`i come il classico algoritmo di 
 Viterbi, viene eseguito alla fine valutando tutta la frase nella sua 
 interezza e per tale motivo \`e ottimo in fase di testing. 
