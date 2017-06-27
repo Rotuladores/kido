@@ -352,7 +352,7 @@ class hmm():
 			l = len(obs)
 			sobs = obs[0:1]+'-'+obs[1:]
 			if len(sobs) == len(real):
-				for i in range(2,l):
+				for i in range(1,l):
 					rett = 1
 					sobs = obs[0:i]+'-'+obs[i:]
 					for c in range(0,len(sobs)):
